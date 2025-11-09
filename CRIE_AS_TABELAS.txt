@@ -1,0 +1,151 @@
+╔════════════════════════════════════════════════════════════════════╗
+║           🚨 IMPORTANTE: CRIAR TABELAS NO SUPABASE 🚨              ║
+║                                                                    ║
+║  As tabelas precisam ser criadas manualmente no Supabase.         ║
+║  Siga os passos abaixo (leva 2 minutos):                         ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📋 PASSO A PASSO:
+
+1️⃣  Acesse: https://supabase.com/dashboard
+
+2️⃣  Selecione seu projeto: yxdufeiphenwlnnqbwji
+
+3️⃣  No menu lateral esquerdo, clique em: "SQL Editor"
+
+4️⃣  Clique no botão: "+ New Query"
+
+5️⃣  COPIE E COLE TODO O SQL ABAIXO na caixa de texto:
+
+═══════════════════════════════════════════════════════════════════
+
+-- Criar tabela CLIENTES
+CREATE TABLE IF NOT EXISTS clientes (
+  id TEXT PRIMARY KEY,
+  nome TEXT NOT NULL,
+  nif TEXT NOT NULL,
+  telefone TEXT,
+  email TEXT,
+  endereco TEXT,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Criar tabela DOCUMENTOS_CLIENTES
+CREATE TABLE IF NOT EXISTS documentos_clientes (
+  id TEXT PRIMARY KEY,
+  "clienteId" TEXT NOT NULL,
+  "fileUrl" TEXT NOT NULL,
+  "fileName" TEXT NOT NULL,
+  "fileType" TEXT,
+  "uploadedAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  FOREIGN KEY ("clienteId") REFERENCES clientes(id) ON DELETE CASCADE
+);
+
+-- Criar tabela DESPACHOS
+CREATE TABLE IF NOT EXISTS despachos (
+  id TEXT PRIMARY KEY,
+  "clienteId" TEXT NOT NULL,
+  destino TEXT NOT NULL,
+  "dataEmbarque" DATE,
+  "numeroContentor" TEXT,
+  estado TEXT DEFAULT 'Em aberto',
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  FOREIGN KEY ("clienteId") REFERENCES clientes(id) ON DELETE CASCADE
+);
+
+-- Criar tabela DOCUMENTOS_DESPACHOS
+CREATE TABLE IF NOT EXISTS documentos_despachos (
+  id TEXT PRIMARY KEY,
+  "despachoId" TEXT NOT NULL,
+  "fileUrl" TEXT NOT NULL,
+  "fileName" TEXT NOT NULL,
+  "fileType" TEXT,
+  "uploadedAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  FOREIGN KEY ("despachoId") REFERENCES despachos(id) ON DELETE CASCADE
+);
+
+-- Criar tabela PRODUTOS
+CREATE TABLE IF NOT EXISTS produtos (
+  id TEXT PRIMARY KEY,
+  "despachoId" TEXT NOT NULL,
+  nome TEXT NOT NULL,
+  peso DECIMAL(10,2),
+  quantidade INTEGER,
+  valor DECIMAL(10,2),
+  "hsCode" TEXT,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  FOREIGN KEY ("despachoId") REFERENCES despachos(id) ON DELETE CASCADE
+);
+
+-- Habilitar Row Level Security (RLS)
+ALTER TABLE clientes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documentos_clientes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE despachos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documentos_despachos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE produtos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE pauta ENABLE ROW LEVEL SECURITY;
+
+-- Criar políticas de acesso
+DROP POLICY IF EXISTS "Allow all operations" ON clientes;
+CREATE POLICY "Allow all operations" ON clientes FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON documentos_clientes;
+CREATE POLICY "Allow all operations" ON documentos_clientes FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON despachos;
+CREATE POLICY "Allow all operations" ON despachos FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON documentos_despachos;
+CREATE POLICY "Allow all operations" ON documentos_despachos FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON produtos;
+CREATE POLICY "Allow all operations" ON produtos FOR ALL USING (true);
+
+DROP POLICY IF EXISTS "Allow all operations" ON pauta;
+CREATE POLICY "Allow all operations" ON pauta FOR ALL USING (true);
+
+-- Criar índices para performance
+CREATE INDEX IF NOT EXISTS idx_clientes_created ON clientes("createdAt" DESC);
+CREATE INDEX IF NOT EXISTS idx_despachos_cliente ON despachos("clienteId");
+CREATE INDEX IF NOT EXISTS idx_despachos_estado ON despachos(estado);
+CREATE INDEX IF NOT EXISTS idx_produtos_despacho ON produtos("despachoId");
+CREATE INDEX IF NOT EXISTS idx_pauta_codigo ON pauta(codigo);
+CREATE INDEX IF NOT EXISTS idx_pauta_descricao ON pauta(descricao);
+
+═══════════════════════════════════════════════════════════════════
+
+6️⃣  Clique no botão verde "RUN" (ou pressione Ctrl+Enter)
+
+7️⃣  Aguarde aparecer "Success. No rows returned"
+
+8️⃣  CRIAR BUCKETS DE STORAGE:
+   
+   a) No menu lateral, clique em "Storage"
+   b) Clique em "+ New bucket"
+   c) Nome: documentos-clientes
+   d) Marque "Public bucket" ✅
+   e) Clique em "Create bucket"
+   
+   f) Repita para criar o segundo bucket:
+      Nome: documentos-despachos
+      Marque "Public bucket" ✅
+      Clique em "Create bucket"
+
+9️⃣  VERIFICAR SE DEU CERTO:
+   
+   a) Vá em "Table Editor" no menu lateral
+   b) Você deve ver as tabelas:
+      ✅ clientes
+      ✅ documentos_clientes
+      ✅ despachos
+      ✅ documentos_despachos
+      ✅ produtos
+      ✅ pauta (já existia)
+
+🎉 PRONTO! Agora sua aplicação vai funcionar perfeitamente!
+
+═══════════════════════════════════════════════════════════════════
+
+⚠️  Se aparecer algum erro ao rodar o SQL, me avise qual é o erro!
+
+═══════════════════════════════════════════════════════════════════
