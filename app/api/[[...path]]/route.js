@@ -370,8 +370,8 @@ const handlePauta = async (request, method) => {
       .order('codigo', { ascending: true })
 
     if (search && search.trim()) {
-      // Search in both codigo and descricao
-      query = query.or(`codigo.ilike.%${search}%,descricao.ilike.%${search}%`)
+      // Search only in descricao (description) since codigo is numeric
+      query = query.ilike('descricao', `%${search}%`)
     }
 
     const { data, error } = await query.limit(20)
