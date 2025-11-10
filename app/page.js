@@ -372,7 +372,7 @@ export default function DespachoOnline() {
     
     const tableData = produtos.map(p => [
       p.nome,
-      p.hsCode || 'N/A',
+      p.codigo || 'N/A',
       `${p.peso} kg`,
       p.quantidade,
       `${p.valor} USD`,
