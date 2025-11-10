@@ -226,9 +226,7 @@ const handleDespachos = async (request, method) => {
     const despacho = {
       id: `despacho_${uuidv4()}`,
       clienteId: body.clienteId,
-      destino: body.destino,
-      dataEmbarque: body.dataEmbarque || null,
-      numeroContentor: body.numeroContentor || '',
+      numeroSeries: body.numeroSeries || '',
       estado: body.estado || 'Em aberto',
       createdAt: new Date().toISOString()
     }
