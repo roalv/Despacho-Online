@@ -1241,7 +1241,7 @@ export default function DespachoOnline() {
                                 <span>{doc.clientes.nome}</span>
                               )}
                               {doc.tipo === 'Despacho' && doc.despachos && (
-                                <span>{doc.despachos.clientes?.nome} - {doc.despachos.destino}</span>
+                                <span>{doc.despachos.clientes?.nome} - {doc.despachos.numeroSeries}</span>
                               )}
                               <span>•</span>
                               <span>{new Date(doc.uploadedAt).toLocaleDateString('pt-BR')}</span>
