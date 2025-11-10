@@ -910,10 +910,8 @@ export default function DespachoOnline() {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Cliente</TableHead>
-                        <TableHead>Destino</TableHead>
-                        <TableHead>Contentor</TableHead>
+                        <TableHead>Nº Série</TableHead>
                         <TableHead>Estado</TableHead>
-                        <TableHead>Data</TableHead>
                         <TableHead className="text-right">Ações</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -921,8 +919,7 @@ export default function DespachoOnline() {
                       {filteredDespachos.map(despacho => (
                         <TableRow key={despacho.id}>
                           <TableCell className="font-medium">{despacho.clientes?.nome}</TableCell>
-                          <TableCell>{despacho.destino}</TableCell>
-                          <TableCell>{despacho.numeroContentor || 'N/A'}</TableCell>
+                          <TableCell className="font-mono">{despacho.numeroSeries || 'N/A'}</TableCell>
                           <TableCell>
                             <Select value={despacho.estado} onValueChange={(value) => handleUpdateDespachoEstado(despacho.id, value)}>
                               <SelectTrigger className="w-36">
@@ -936,7 +933,6 @@ export default function DespachoOnline() {
                               </SelectContent>
                             </Select>
                           </TableCell>
-                          <TableCell>{despacho.dataEmbarque ? new Date(despacho.dataEmbarque).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
                           <TableCell className="text-right space-x-2">
                             <Button size="sm" variant="outline" onClick={() => viewDespachoDetails(despacho.id)}>
                               <Eye size={14} />
