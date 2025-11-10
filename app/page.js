@@ -377,11 +377,11 @@ export default function DespachoOnline() {
       p.quantidade,
       `${p.valor} USD`,
       p.despachos?.clientes?.nome || 'N/A',
-      p.despachos?.destino || 'N/A'
+      p.despachos?.numeroSeries || 'N/A'
     ])
     
     doc.autoTable({
-      head: [['Produto', 'HS Code', 'Peso', 'Qtd', 'Valor', 'Cliente', 'Destino']],
+      head: [['Produto', 'HS Code', 'Peso', 'Qtd', 'Valor', 'Cliente', 'Nº Série']],
       body: tableData,
       startY: 30,
       theme: 'grid'
