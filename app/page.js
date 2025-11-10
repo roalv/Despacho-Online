@@ -1207,7 +1207,7 @@ export default function DespachoOnline() {
                           <TableCell>{produto.quantidade}</TableCell>
                           <TableCell>${produto.valor}</TableCell>
                           <TableCell>{produto.despachos?.clientes?.nome || 'N/A'}</TableCell>
-                          <TableCell>{produto.despachos?.destino || 'N/A'}</TableCell>
+                          <TableCell className="font-mono">{produto.despachos?.numeroSeries || 'N/A'}</TableCell>
                           <TableCell className="text-right">
                             <Button size="sm" variant="destructive" onClick={() => handleDeleteProduto(produto.id)}>
                               <Trash2 size={14} />
