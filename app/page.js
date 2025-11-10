@@ -1187,7 +1187,7 @@ export default function DespachoOnline() {
                         <Label htmlFor="produto-hs">HS Code Selecionado</Label>
                         <Input
                           id="produto-hs"
-                          value={produtoForm.hsCode}
+                          value={produtoForm.codigo}
                           onChange={(e) => setProdutoForm({ ...produtoForm, codigo: e.target.value })}
                           placeholder="Código HS"
                           className="font-mono"
