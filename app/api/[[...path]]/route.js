@@ -1,41 +1,78 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '../../../lib/supabase.js'
 import { v4 as uuidv4 } from 'uuid'
+import bcrypt from 'bcryptjs'
 
-// Auth endpoints
+// Auth endpoints - usando tabela users customizada
 const handleAuth = async (request, method) => {
   if (method === 'POST') {
     const body = await request.json()
     const { action, email, password, nome } = body
 
     if (action === 'register') {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { nome }
-        }
-      })
+      // Verificar se usuário já existe
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('email')
+        .eq('email', email)
+        .single()
+      
+      if (existingUser) {
+        return NextResponse.json({ error: 'Email já cadastrado' }, { status: 400 })
+      }
+
+      // Hash da senha
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      // Criar usuário
+      const { data, error } = await supabase
+        .from('users')
+        .insert([{
+          email,
+          password: hashedPassword,
+          createdAt: new Date().toISOString()
+        }])
+        .select()
+        .single()
+
       if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-      return NextResponse.json({ user: data.user, session: data.session })
+      
+      // Não retornar senha
+      const { password: _, ...user } = data
+      return NextResponse.json({ user, session: { email: user.email } })
     }
 
     if (action === 'login') {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-      return NextResponse.json({ user: data.user, session: data.session })
+      // Buscar usuário
+      const { data: user, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single()
+
+      if (error || !user) {
+        return NextResponse.json({ error: 'Email ou senha incorretos' }, { status: 400 })
+      }
+
+      // Verificar senha
+      const passwordMatch = await bcrypt.compare(password, user.password)
+      if (!passwordMatch) {
+        return NextResponse.json({ error: 'Email ou senha incorretos' }, { status: 400 })
+      }
+
+      // Não retornar senha
+      const { password: _, ...userWithoutPassword } = user
+      return NextResponse.json({ user: userWithoutPassword, session: { email: user.email } })
     }
 
     if (action === 'logout') {
-      const { error } = await supabase.auth.signOut()
-      if (error) return NextResponse.json({ error: error.message }, { status: 400 })
       return NextResponse.json({ success: true })
     }
 
     if (action === 'getUser') {
-      const { data: { user }, error } = await supabase.auth.getUser()
-      if (error) return NextResponse.json({ error: error.message }, { status: 400 })
-      return NextResponse.json({ user })
+      // Para simplificar, vamos apenas retornar sucesso
+      // Em produção, você usaria JWT ou cookies para gerenciar sessões
+      return NextResponse.json({ user: null })
     }
   }
 }
