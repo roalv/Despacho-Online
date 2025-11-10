@@ -1,0 +1,46 @@
+╔════════════════════════════════════════════════════════════════════╗
+║              🔄 ATUALIZAÇÃO DO BANCO DE DADOS                      ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📋 EXECUTE ESTE SQL NO SUPABASE:
+
+1️⃣  Acesse: https://supabase.com/dashboard
+2️⃣  Selecione seu projeto: yxdufeiphenwlnnqbwji
+3️⃣  Clique em "SQL Editor" no menu lateral
+4️⃣  Clique em "+ New Query"
+5️⃣  COPIE E COLE o SQL abaixo:
+
+═══════════════════════════════════════════════════════════════════
+
+-- ATUALIZAR TABELA DESPACHOS
+ALTER TABLE despachos DROP COLUMN IF EXISTS destino;
+ALTER TABLE despachos DROP COLUMN IF EXISTS "dataEmbarque";
+ALTER TABLE despachos DROP COLUMN IF EXISTS "numeroContentor";
+ALTER TABLE despachos ADD COLUMN IF NOT EXISTS "numeroSeries" TEXT;
+
+-- ATUALIZAR TABELA PRODUTOS
+ALTER TABLE produtos RENAME COLUMN "hsCode" TO codigo;
+
+-- CRIAR TABELA USERS
+CREATE TABLE IF NOT EXISTS users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow all operations" ON users;
+CREATE POLICY "Allow all operations" ON users FOR ALL USING (true);
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+
+═══════════════════════════════════════════════════════════════════
+
+6️⃣  Clique em "RUN" (ou Ctrl+Enter)
+7️⃣  Aguarde "Success. No rows returned"
+
+✅ PRONTO! Agora me avise que executou para eu atualizar o código!
+
+═══════════════════════════════════════════════════════════════════
