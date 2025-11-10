@@ -365,7 +365,7 @@ const handleProdutos = async (request, method) => {
       peso: body.peso || 0,
       quantidade: body.quantidade || 0,
       valor: body.valor || 0,
-      hsCode: body.hsCode || '',
+      codigo: body.codigo || '',
       createdAt: new Date().toISOString()
     }
 
