@@ -329,7 +329,7 @@ export default function DespachoOnline() {
         alert(data.error)
       } else {
         setShowProdutoDialog(false)
-        setProdutoForm({ despachoId: '', nome: '', peso: '', quantidade: '', valor: '', hsCode: '' })
+        setProdutoForm({ despachoId: '', nome: '', peso: '', quantidade: '', valor: '', codigo: '' })
         setPautaSearch('')
         setPautaResults([])
         fetchProdutos()
