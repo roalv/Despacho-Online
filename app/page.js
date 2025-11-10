@@ -358,7 +358,7 @@ export default function DespachoOnline() {
   }
 
   const selectHSCode = (codigo, descricao) => {
-    setProdutoForm({ ...produtoForm, hsCode: codigo })
+    setProdutoForm({ ...produtoForm, codigo: codigo })
     setPautaSearch(descricao)
     setPautaResults([])
   }
