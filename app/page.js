@@ -862,32 +862,14 @@ export default function DespachoOnline() {
                         </Select>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="despacho-destino">Destino *</Label>
+                        <Label htmlFor="despacho-series">Número de Série *</Label>
                         <Input
-                          id="despacho-destino"
-                          value={despachoForm.destino}
-                          onChange={(e) => setDespachoForm({ ...despachoForm, destino: e.target.value })}
+                          id="despacho-series"
+                          value={despachoForm.numeroSeries}
+                          onChange={(e) => setDespachoForm({ ...despachoForm, numeroSeries: e.target.value })}
                           required
+                          placeholder="Ex: 2025/001"
                         />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="despacho-data">Data de Embarque</Label>
-                          <Input
-                            id="despacho-data"
-                            type="date"
-                            value={despachoForm.dataEmbarque}
-                            onChange={(e) => setDespachoForm({ ...despachoForm, dataEmbarque: e.target.value })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="despacho-contentor">Nº Contentor</Label>
-                          <Input
-                            id="despacho-contentor"
-                            value={despachoForm.numeroContentor}
-                            onChange={(e) => setDespachoForm({ ...despachoForm, numeroContentor: e.target.value })}
-                          />
-                        </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="despacho-estado">Estado</Label>
