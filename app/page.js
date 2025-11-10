@@ -1084,7 +1084,7 @@ export default function DespachoOnline() {
                           <SelectContent>
                             {despachos.map(d => (
                               <SelectItem key={d.id} value={d.id}>
-                                {d.destino} - {d.clientes?.nome}
+                                {d.numeroSeries} - {d.clientes?.nome}
                               </SelectItem>
                             ))}
                           </SelectContent>
