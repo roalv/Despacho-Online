@@ -966,12 +966,8 @@ export default function DespachoOnline() {
                     <p className="font-medium">{selectedDespacho.clientes?.nome}</p>
                   </div>
                   <div>
-                    <Label className="text-gray-500">Destino</Label>
-                    <p className="font-medium">{selectedDespacho.destino}</p>
-                  </div>
-                  <div>
-                    <Label className="text-gray-500">Nº Contentor</Label>
-                    <p className="font-medium">{selectedDespacho.numeroContentor || 'N/A'}</p>
+                    <Label className="text-gray-500">Número de Série</Label>
+                    <p className="font-medium font-mono">{selectedDespacho.numeroSeries || 'N/A'}</p>
                   </div>
                   <div>
                     <Label className="text-gray-500">Estado</Label>
