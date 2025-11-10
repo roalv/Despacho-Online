@@ -397,8 +397,7 @@ export default function DespachoOnline() {
   )
 
   const filteredDespachos = despachos.filter(d => 
-    d.destino?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    d.numeroContentor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    d.numeroSeries?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     d.clientes?.nome?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
