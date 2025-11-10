@@ -1188,7 +1188,7 @@ export default function DespachoOnline() {
                         <Input
                           id="produto-hs"
                           value={produtoForm.hsCode}
-                          onChange={(e) => setProdutoForm({ ...produtoForm, hsCode: e.target.value })}
+                          onChange={(e) => setProdutoForm({ ...produtoForm, codigo: e.target.value })}
                           placeholder="Código HS"
                           className="font-mono"
                         />
