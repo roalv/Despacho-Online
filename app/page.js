@@ -1229,7 +1229,7 @@ export default function DespachoOnline() {
                       {produtos.map(produto => (
                         <TableRow key={produto.id}>
                           <TableCell className="font-medium">{produto.nome}</TableCell>
-                          <TableCell className="font-mono text-blue-600">{produto.hsCode || 'N/A'}</TableCell>
+                          <TableCell className="font-mono text-blue-600">{produto.codigo || 'N/A'}</TableCell>
                           <TableCell>{produto.peso}</TableCell>
                           <TableCell>{produto.quantidade}</TableCell>
                           <TableCell>${produto.valor}</TableCell>
