@@ -349,7 +349,7 @@ const handleProdutos = async (request, method) => {
   if (method === 'GET') {
     const { data, error } = await supabase
       .from('produtos')
-      .select('*, despachos(destino, clientes(nome))')
+      .select('*, despachos(numeroSeries, clientes(nome))')
       .order('createdAt', { ascending: false })
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
