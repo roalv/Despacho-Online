@@ -588,7 +588,7 @@ export default function DespachoOnline() {
                     {despachos.slice(0, 5).map(d => (
                       <div key={d.id} className="flex justify-between items-center py-2 border-b last:border-0">
                         <div>
-                          <p className="font-medium">{d.destino}</p>
+                          <p className="font-medium font-mono">{d.numeroSeries}</p>
                           <p className="text-sm text-gray-500">{d.clientes?.nome}</p>
                         </div>
                         <Badge>{d.estado}</Badge>
