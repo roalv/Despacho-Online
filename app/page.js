@@ -1082,7 +1082,7 @@ export default function DespachoOnline() {
               <Card className="mb-6">
                 <CardHeader>
                   <div className="flex justify-between items-center">
-                    <CardTitle>Documentos</CardTitle>
+                    <CardTitle>3️⃣ Documentos</CardTitle>
                     <Label htmlFor={`upload-despacho-${selectedDespacho.id}`} className="cursor-pointer">
                       <Button type="button" size="sm">
                         <Upload className="mr-2" size={14} />
