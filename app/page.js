@@ -386,7 +386,10 @@ export default function DespachoOnline() {
     
     const res = await fetch('/api/produtos', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-user-id': user.id
+      },
       body: JSON.stringify({ id })
     })
     
