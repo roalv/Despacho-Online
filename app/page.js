@@ -438,6 +438,61 @@ export default function DespachoOnline() {
     doc.save('classificacao.pdf')
   }
 
+  // Export Despacho to PDF
+  const exportDespachoToPDF = (despacho) => {
+    const doc = new jsPDF()
+    
+    // Título
+    doc.setFontSize(20)
+    doc.text('Despacho - Detalhes', 14, 20)
+    
+    // Detalhes do Despacho
+    doc.setFontSize(14)
+    doc.text('Detalhes do Despacho', 14, 35)
+    doc.setFontSize(11)
+    doc.text(`Cliente: ${despacho.clientes?.nome || 'N/A'}`, 14, 45)
+    doc.text(`Número de Série: ${despacho.numeroSeries || 'N/A'}`, 14, 52)
+    doc.text(`Estado: ${despacho.estado}`, 14, 59)
+    
+    // Produtos Classificados
+    if (despacho.produtos && despacho.produtos.length > 0) {
+      doc.setFontSize(14)
+      doc.text('Produtos Classificados', 14, 75)
+      
+      const tableData = despacho.produtos.map(p => [
+        p.nome,
+        p.codigo || 'N/A',
+        `${p.peso}`,
+        `${p.quantidade}`,
+        `$${p.valor}`
+      ])
+      
+      // Calcular totais
+      const totalPeso = despacho.produtos.reduce((sum, p) => sum + (parseFloat(p.peso) || 0), 0).toFixed(2)
+      const totalQtd = despacho.produtos.reduce((sum, p) => sum + (parseInt(p.quantidade) || 0), 0)
+      const totalValor = despacho.produtos.reduce((sum, p) => sum + (parseFloat(p.valor) || 0), 0).toFixed(2)
+      
+      // Adicionar linha de totais
+      tableData.push(['TOTAL', '-', totalPeso, totalQtd, `$${totalValor}`])
+      
+      doc.autoTable({
+        head: [['Produto', 'HS Code', 'Peso (kg)', 'Qtd', 'Valor']],
+        body: tableData,
+        startY: 82,
+        theme: 'grid',
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [59, 130, 246] },
+        foot: [[{
+          content: `Totais: ${totalPeso} kg | ${totalQtd} unidades | $${totalValor}`,
+          colSpan: 5,
+          styles: { halign: 'right', fontStyle: 'bold' }
+        }]]
+      })
+    }
+    
+    doc.save(`despacho_${despacho.numeroSeries || despacho.id}.pdf`)
+  }
+
   // Filter functions
   const filteredClientes = clientes.filter(c => 
     c.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
