@@ -40,7 +40,7 @@ export default function DespachoOnline() {
   
   // Form state
   const [clienteForm, setClienteForm] = useState({ nome: '', nif: '', telefone: '', email: '', endereco: '' })
-  const [despachoForm, setDespachoForm] = useState({ clienteId: '', numeroSeries: '', estado: 'Em aberto' })
+  const [despachoForm, setDespachoForm] = useState({ clienteId: '', numeroSeries: '', estado: 'Em Aberto' })
   const [produtoForm, setProdutoForm] = useState({ despachoId: '', nome: '', peso: '', quantidade: '', valor: '', codigo: '' })
   const [searchTerm, setSearchTerm] = useState('')
   const [pautaSearch, setPautaSearch] = useState('')
