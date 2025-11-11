@@ -53,22 +53,34 @@ export default function DespachoOnline() {
   
   // Pauta form
   const [pautaForm, setPautaForm] = useState({ codigo: '', descricao: '' })
+  
+  // Filtro de classificação
+  const [filtroClassificacao, setFiltroClassificacao] = useState('')
 
   // Fetch data functions
   const fetchClientes = async () => {
-    const res = await fetch('/api/clientes')
+    if (!user?.id) return
+    const res = await fetch('/api/clientes', {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setClientes(data)
   }
 
   const fetchDespachos = async () => {
-    const res = await fetch('/api/despachos')
+    if (!user?.id) return
+    const res = await fetch('/api/despachos', {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setDespachos(data)
   }
 
   const fetchProdutos = async () => {
-    const res = await fetch('/api/produtos')
+    if (!user?.id) return
+    const res = await fetch('/api/produtos', {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setProdutos(data)
   }
