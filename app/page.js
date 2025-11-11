@@ -261,7 +261,7 @@ export default function DespachoOnline() {
         alert(data.error)
       } else {
         setShowDespachoDialog(false)
-        setDespachoForm({ clienteId: '', numeroSeries: '', estado: 'Em aberto' })
+        setDespachoForm({ clienteId: '', numeroSeries: '', estado: 'Em Aberto' })
         fetchDespachos()
         alert('Despacho criado com sucesso!')
       }
