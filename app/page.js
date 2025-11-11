@@ -1295,7 +1295,14 @@ export default function DespachoOnline() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {produtos.map(produto => (
+                      {produtos.filter(produto => {
+                        if (!filtroClassificacao) return true
+                        const termo = filtroClassificacao.toLowerCase()
+                        return (
+                          produto.despachos?.numeroSeries?.toLowerCase().includes(termo) ||
+                          produto.despachos?.clientes?.nome?.toLowerCase().includes(termo)
+                        )
+                      }).map(produto => (
                         <TableRow key={produto.id}>
                           <TableCell className="font-medium">{produto.nome}</TableCell>
                           <TableCell className="font-mono text-blue-600">{produto.codigo || 'N/A'}</TableCell>
