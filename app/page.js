@@ -49,6 +49,10 @@ export default function DespachoOnline() {
   const [showClienteDialog, setShowClienteDialog] = useState(false)
   const [showDespachoDialog, setShowDespachoDialog] = useState(false)
   const [showProdutoDialog, setShowProdutoDialog] = useState(false)
+  const [showPautaDialog, setShowPautaDialog] = useState(false)
+  
+  // Pauta form
+  const [pautaForm, setPautaForm] = useState({ codigo: '', descricao: '' })
 
   // Fetch data functions
   const fetchClientes = async () => {
