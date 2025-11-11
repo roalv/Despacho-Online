@@ -191,7 +191,10 @@ export default function DespachoOnline() {
     
     const res = await fetch('/api/clientes', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-user-id': user.id
+      },
       body: JSON.stringify({ id })
     })
     
@@ -202,7 +205,9 @@ export default function DespachoOnline() {
   }
 
   const viewClienteDetails = async (id) => {
-    const res = await fetch(`/api/clientes/${id}`)
+    const res = await fetch(`/api/clientes/${id}`, {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setSelectedCliente(data)
     setCurrentView('cliente-detalhes')
