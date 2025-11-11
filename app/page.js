@@ -1125,40 +1125,6 @@ export default function DespachoOnline() {
                   )}
                 </CardContent>
               </Card>
-              
-              <Card>
-                <CardHeader>
-                  <CardTitle>Produtos Classificados</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {selectedDespacho.produtos && selectedDespacho.produtos.length > 0 ? (
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Produto</TableHead>
-                          <TableHead>HS Code</TableHead>
-                          <TableHead>Peso (kg)</TableHead>
-                          <TableHead>Quantidade</TableHead>
-                          <TableHead>Valor</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {selectedDespacho.produtos.map(p => (
-                          <TableRow key={p.id}>
-                            <TableCell>{p.nome}</TableCell>
-                            <TableCell className="font-mono">{p.codigo || 'N/A'}</TableCell>
-                            <TableCell>{p.peso}</TableCell>
-                            <TableCell>{p.quantidade}</TableCell>
-                            <TableCell>${p.valor}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  ) : (
-                    <p className="text-gray-500 text-center py-4">Nenhum produto classificado</p>
-                  )}
-                </CardContent>
-              </Card>
             </div>
           )}
 
