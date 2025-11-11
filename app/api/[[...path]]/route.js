@@ -418,7 +418,6 @@ const handlePauta = async (request, method) => {
   if (method === 'POST') {
     const body = await request.json()
     const novoCodigo = {
-      id: `pauta_${uuidv4()}`,
       codigo: parseInt(body.codigo) || 0,
       descricao: body.descricao
     }
