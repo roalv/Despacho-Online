@@ -534,6 +534,7 @@ export async function POST(request) {
   if (path === 'despachos') return handleDespachos(request, 'POST')
   if (path === 'documentos-despachos') return handleDocumentosDespachos(request, 'POST')
   if (path === 'produtos') return handleProdutos(request, 'POST')
+  if (path === 'pauta') return handlePauta(request, 'POST')
   if (path === 'upload') return handleUpload(request, 'POST')
   
   return NextResponse.json({ error: 'Not found' }, { status: 404 })
