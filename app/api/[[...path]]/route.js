@@ -226,9 +226,13 @@ const handleDocumentosClientes = async (request, method) => {
 // Despachos endpoints
 const handleDespachos = async (request, method) => {
   if (method === 'GET') {
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const { data, error } = await supabase
       .from('despachos')
       .select('*, clientes(nome)')
+      .eq('userId', userId)
       .order('createdAt', { ascending: false })
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -237,11 +241,15 @@ const handleDespachos = async (request, method) => {
 
   if (method === 'POST') {
     const body = await request.json()
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const despacho = {
       id: `despacho_${uuidv4()}`,
+      userId: userId,
       clienteId: body.clienteId,
       numeroSeries: body.numeroSeries || '',
-      estado: body.estado || 'Em aberto',
+      estado: body.estado || 'Em Aberto',
       createdAt: new Date().toISOString()
     }
 
