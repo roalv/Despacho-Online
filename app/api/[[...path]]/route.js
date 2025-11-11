@@ -122,11 +122,14 @@ const handleClientes = async (request, method) => {
   if (method === 'PUT') {
     const body = await request.json()
     const { id, ...updates } = body
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
 
     const { data, error } = await supabase
       .from('clientes')
       .update(updates)
       .eq('id', id)
+      .eq('userId', userId)
       .select()
       .single()
     
@@ -137,11 +140,14 @@ const handleClientes = async (request, method) => {
   if (method === 'DELETE') {
     const body = await request.json()
     const { id } = body
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
 
     const { error } = await supabase
       .from('clientes')
       .delete()
       .eq('id', id)
+      .eq('userId', userId)
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json({ success: true })
