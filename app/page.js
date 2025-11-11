@@ -1002,12 +1002,19 @@ export default function DespachoOnline() {
           {/* Despacho Details View */}
           {currentView === 'despacho-detalhes' && selectedDespacho && (
             <div>
-              <Button variant="outline" className="mb-4" onClick={() => setCurrentView('despachos')}>
-                ← Voltar
-              </Button>
+              <div className="flex justify-between items-center mb-4">
+                <Button variant="outline" onClick={() => setCurrentView('despachos')}>
+                  ← Voltar
+                </Button>
+                <Button onClick={() => exportDespachoToPDF(selectedDespacho)}>
+                  <Download className="mr-2" size={16} />
+                  Exportar PDF
+                </Button>
+              </div>
+              
               <Card className="mb-6">
                 <CardHeader>
-                  <CardTitle>Detalhes do Despacho</CardTitle>
+                  <CardTitle>1️⃣ Detalhes do Despacho</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4">
                   <div>
@@ -1022,6 +1029,53 @@ export default function DespachoOnline() {
                     <Label className="text-gray-500">Estado</Label>
                     <Badge>{selectedDespacho.estado}</Badge>
                   </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="mb-6">
+                <CardHeader>
+                  <CardTitle>2️⃣ Produtos Classificados</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {selectedDespacho.produtos && selectedDespacho.produtos.length > 0 ? (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Produto</TableHead>
+                          <TableHead>HS Code</TableHead>
+                          <TableHead>Peso (kg)</TableHead>
+                          <TableHead>Quantidade</TableHead>
+                          <TableHead>Valor</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {selectedDespacho.produtos.map(p => (
+                          <TableRow key={p.id}>
+                            <TableCell>{p.nome}</TableCell>
+                            <TableCell className="font-mono">{p.codigo || 'N/A'}</TableCell>
+                            <TableCell>{p.peso}</TableCell>
+                            <TableCell>{p.quantidade}</TableCell>
+                            <TableCell>${p.valor}</TableCell>
+                          </TableRow>
+                        ))}
+                        <TableRow className="bg-gray-100 font-bold">
+                          <TableCell>TOTAL</TableCell>
+                          <TableCell>-</TableCell>
+                          <TableCell>
+                            {selectedDespacho.produtos.reduce((sum, p) => sum + (parseFloat(p.peso) || 0), 0).toFixed(2)}
+                          </TableCell>
+                          <TableCell>
+                            {selectedDespacho.produtos.reduce((sum, p) => sum + (parseInt(p.quantidade) || 0), 0)}
+                          </TableCell>
+                          <TableCell>
+                            ${selectedDespacho.produtos.reduce((sum, p) => sum + (parseFloat(p.valor) || 0), 0).toFixed(2)}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <p className="text-gray-500 text-center py-4">Nenhum produto classificado</p>
+                  )}
                 </CardContent>
               </Card>
               
