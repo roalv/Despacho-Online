@@ -1192,7 +1192,7 @@ export default function DespachoOnline() {
                         </ScrollArea>
                       )}
                       <div className="space-y-2">
-                        <Label htmlFor="produto-hs">HS Code Selecionado</Label>
+                        <Label htmlFor="produto-hs">Código Selecionado</Label>
                         <Input
                           id="produto-hs"
                           value={produtoForm.codigo}
