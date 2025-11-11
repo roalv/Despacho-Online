@@ -419,9 +419,8 @@ const handlePauta = async (request, method) => {
     const body = await request.json()
     const novoCodigo = {
       id: `pauta_${uuidv4()}`,
-      codigo: body.codigo,
-      descricao: body.descricao,
-      createdAt: new Date().toISOString()
+      codigo: parseInt(body.codigo) || 0,
+      descricao: body.descricao
     }
 
     const { data, error } = await supabase
