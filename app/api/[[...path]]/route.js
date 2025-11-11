@@ -249,7 +249,7 @@ const handleDespachos = async (request, method) => {
       userId: userId,
       clienteId: body.clienteId,
       numeroSeries: body.numeroSeries || '',
-      estado: body.estado || 'Em Aberto',
+      estado: body.estado || 'Faltando Documento',
       createdAt: new Date().toISOString()
     }
 
