@@ -1091,7 +1091,7 @@ export default function DespachoOnline() {
               
               <Card className="mb-6">
                 <CardHeader>
-                  <CardTitle>1️⃣ Detalhes do Despacho</CardTitle>
+                  <CardTitle>Detalhes do Despacho</CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-2 gap-4">
                   <div>
