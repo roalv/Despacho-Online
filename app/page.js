@@ -1247,6 +1247,7 @@ export default function DespachoOnline() {
                     </form>
                   </DialogContent>
                 </Dialog>
+                </div>
               </div>
               
               <Card>
