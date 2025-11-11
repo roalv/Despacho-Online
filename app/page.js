@@ -910,8 +910,10 @@ export default function DespachoOnline() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Em aberto">Em aberto</SelectItem>
-                            <SelectItem value="Em classificação">Em classificação</SelectItem>
+                            <SelectItem value="Em Aberto">Em Aberto</SelectItem>
+                            <SelectItem value="Faltando Documento">Faltando Documento</SelectItem>
+                            <SelectItem value="Em Classificação">Em Classificação</SelectItem>
+                            <SelectItem value="Em Despacho">Em Despacho</SelectItem>
                             <SelectItem value="Pronto">Pronto</SelectItem>
                             <SelectItem value="Concluído">Concluído</SelectItem>
                           </SelectContent>
