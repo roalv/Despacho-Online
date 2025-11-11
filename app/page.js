@@ -1098,13 +1098,53 @@ export default function DespachoOnline() {
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-bold">Classificação de Produtos</h2>
-                <Dialog open={showProdutoDialog} onOpenChange={setShowProdutoDialog}>
-                  <DialogTrigger asChild>
-                    <Button onClick={() => { fetchDespachos(); fetchClientes(); }}>
-                      <Plus className="mr-2" size={16} />
-                      Adicionar Produto
-                    </Button>
-                  </DialogTrigger>
+                <div className="flex gap-2">
+                  <Dialog open={showPautaDialog} onOpenChange={setShowPautaDialog}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline">
+                        <Plus className="mr-2" size={16} />
+                        Adicionar Código à Pauta
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Adicionar Novo Código à Pauta</DialogTitle>
+                      </DialogHeader>
+                      <form onSubmit={handleCreatePauta} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="pauta-codigo">Código *</Label>
+                          <Input
+                            id="pauta-codigo"
+                            value={pautaForm.codigo}
+                            onChange={(e) => setPautaForm({ ...pautaForm, codigo: e.target.value })}
+                            required
+                            placeholder="Ex: 0901111000"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="pauta-descricao">Descrição *</Label>
+                          <Textarea
+                            id="pauta-descricao"
+                            value={pautaForm.descricao}
+                            onChange={(e) => setPautaForm({ ...pautaForm, descricao: e.target.value })}
+                            required
+                            placeholder="Ex: Café não torrado, não descafeinado"
+                            rows={3}
+                          />
+                        </div>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? 'Adicionando...' : 'Adicionar à Pauta'}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog open={showProdutoDialog} onOpenChange={setShowProdutoDialog}>
+                    <DialogTrigger asChild>
+                      <Button onClick={() => { fetchDespachos(); fetchClientes(); }}>
+                        <Plus className="mr-2" size={16} />
+                        Adicionar Produto
+                      </Button>
+                    </DialogTrigger>
                   <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Adicionar Produto para Classificação</DialogTitle>
