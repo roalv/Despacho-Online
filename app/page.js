@@ -1167,7 +1167,7 @@ export default function DespachoOnline() {
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="pauta-search">Buscar HS Code (Pauta)</Label>
+                        <Label htmlFor="pauta-search">Buscar Código (Pauta)</Label>
                         <Input
                           id="pauta-search"
                           value={pautaSearch}
