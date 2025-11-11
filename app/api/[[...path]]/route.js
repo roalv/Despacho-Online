@@ -80,9 +80,13 @@ const handleAuth = async (request, method) => {
 // Clientes endpoints
 const handleClientes = async (request, method) => {
   if (method === 'GET') {
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const { data, error } = await supabase
       .from('clientes')
       .select('*')
+      .eq('userId', userId)
       .order('createdAt', { ascending: false })
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -91,8 +95,12 @@ const handleClientes = async (request, method) => {
 
   if (method === 'POST') {
     const body = await request.json()
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const cliente = {
       id: `cliente_${uuidv4()}`,
+      userId: userId,
       nome: body.nome,
       nif: body.nif,
       telefone: body.telefone || '',
