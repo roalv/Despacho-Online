@@ -332,12 +332,13 @@ export default function DespachoOnline() {
       if (data.error) {
         alert(data.error)
       } else {
-        setShowProdutoDialog(false)
-        setProdutoForm({ despachoId: '', nome: '', peso: '', quantidade: '', valor: '', codigo: '' })
+        // Manter o dialog aberto e apenas limpar os campos, mantendo o despachoId
+        const currentDespachoId = produtoForm.despachoId
+        setProdutoForm({ despachoId: currentDespachoId, nome: '', peso: '', quantidade: '', valor: '', codigo: '' })
         setPautaSearch('')
         setPautaResults([])
         fetchProdutos()
-        alert('Produto adicionado com sucesso!')
+        alert('Produto adicionado com sucesso! Pode adicionar outro.')
       }
     } catch (error) {
       alert('Erro ao adicionar produto: ' + error.message)
