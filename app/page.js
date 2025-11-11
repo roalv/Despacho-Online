@@ -368,6 +368,34 @@ export default function DespachoOnline() {
     setPautaResults([])
   }
 
+  // Pauta functions
+  const handleCreatePauta = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/pauta', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pautaForm)
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        alert(data.error)
+      } else {
+        setShowPautaDialog(false)
+        setPautaForm({ codigo: '', descricao: '' })
+        alert('Código adicionado à pauta com sucesso!')
+      }
+    } catch (error) {
+      alert('Erro ao adicionar código: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // PDF Export
   const exportPDF = () => {
     const doc = new jsPDF()
