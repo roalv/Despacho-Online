@@ -1156,7 +1156,7 @@ export default function DespachoOnline() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="produto-valor">Valor (USD)</Label>
+                          <Label htmlFor="produto-valor">Valor</Label>
                           <Input
                             id="produto-valor"
                             type="number"
