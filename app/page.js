@@ -1111,7 +1111,7 @@ export default function DespachoOnline() {
               
               <Card className="mb-6">
                 <CardHeader>
-                  <CardTitle>2️⃣ Produtos Classificados</CardTitle>
+                  <CardTitle>Produtos Classificados</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {selectedDespacho.produtos && selectedDespacho.produtos.length > 0 ? (
