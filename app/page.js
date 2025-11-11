@@ -1117,7 +1117,7 @@ export default function DespachoOnline() {
                       <TableHeader>
                         <TableRow>
                           <TableHead>Produto</TableHead>
-                          <TableHead>HS Code</TableHead>
+                          <TableHead>Código</TableHead>
                           <TableHead>Peso (kg)</TableHead>
                           <TableHead>Quantidade</TableHead>
                           <TableHead>Valor</TableHead>
