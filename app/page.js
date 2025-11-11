@@ -1269,10 +1269,15 @@ export default function DespachoOnline() {
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <CardTitle>Lista de Produtos Classificados</CardTitle>
-                    <Button onClick={exportPDF} variant="outline">
-                      <Download className="mr-2" size={16} />
-                      Exportar PDF
-                    </Button>
+                    <div className="flex items-center space-x-2">
+                      <Search size={20} className="text-gray-400" />
+                      <Input
+                        placeholder="Buscar por nº série ou cliente..."
+                        value={filtroClassificacao}
+                        onChange={(e) => setFiltroClassificacao(e.target.value)}
+                        className="max-w-sm"
+                      />
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
