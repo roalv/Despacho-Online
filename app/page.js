@@ -298,7 +298,10 @@ export default function DespachoOnline() {
   const handleUpdateDespachoEstado = async (id, novoEstado) => {
     const res = await fetch('/api/despachos', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-user-id': user.id
+      },
       body: JSON.stringify({ id, estado: novoEstado })
     })
     
@@ -312,7 +315,9 @@ export default function DespachoOnline() {
   }
 
   const viewDespachoDetails = async (id) => {
-    const res = await fetch(`/api/despachos/${id}`)
+    const res = await fetch(`/api/despachos/${id}`, {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setSelectedDespacho(data)
     setCurrentView('despacho-detalhes')
@@ -323,7 +328,10 @@ export default function DespachoOnline() {
     
     const res = await fetch('/api/despachos', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-user-id': user.id
+      },
       body: JSON.stringify({ id })
     })
     
