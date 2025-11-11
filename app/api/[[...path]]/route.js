@@ -414,6 +414,25 @@ const handlePauta = async (request, method) => {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json(data || [])
   }
+
+  if (method === 'POST') {
+    const body = await request.json()
+    const novoCodigo = {
+      id: `pauta_${uuidv4()}`,
+      codigo: body.codigo,
+      descricao: body.descricao,
+      createdAt: new Date().toISOString()
+    }
+
+    const { data, error } = await supabase
+      .from('pauta')
+      .insert([novoCodigo])
+      .select()
+      .single()
+    
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(data)
+  }
 }
 
 // Upload handler
