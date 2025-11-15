@@ -398,6 +398,19 @@ const handleProdutos = async (request, method) => {
 
   if (method === 'POST') {
     const body = await request.json()
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
+    // Verificar se o despacho pertence ao usuário
+    const { data: despacho } = await supabase
+      .from('despachos')
+      .select('id')
+      .eq('id', body.despachoId)
+      .eq('userId', userId)
+      .single()
+    
+    if (!despacho) return NextResponse.json({ error: 'Despacho não encontrado' }, { status: 404 })
+    
     const produto = {
       id: `produto_${uuidv4()}`,
       despachoId: body.despachoId,
