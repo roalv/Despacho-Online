@@ -1168,19 +1168,23 @@ export default function DespachoOnline() {
                 <CardHeader>
                   <div className="flex justify-between items-center">
                     <CardTitle>Documentos</CardTitle>
-                    <Label htmlFor={`upload-cliente-${selectedCliente.id}`} className="cursor-pointer">
-                      <Button type="button" size="sm">
+                    <div>
+                      <input
+                        id={`upload-cliente-${selectedCliente.id}`}
+                        type="file"
+                        className="hidden"
+                        onChange={(e) => handleFileUpload(e, 'cliente', selectedCliente.id)}
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                      />
+                      <Button 
+                        type="button" 
+                        size="sm"
+                        onClick={() => document.getElementById(`upload-cliente-${selectedCliente.id}`).click()}
+                      >
                         <Upload className="mr-2" size={14} />
                         Enviar Documento
                       </Button>
-                    </Label>
-                    <input
-                      id={`upload-cliente-${selectedCliente.id}`}
-                      type="file"
-                      className="hidden"
-                      onChange={(e) => handleFileUpload(e, 'cliente', selectedCliente.id)}
-                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                    />
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
