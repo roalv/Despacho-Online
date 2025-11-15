@@ -1272,15 +1272,9 @@ export default function DespachoOnline() {
           {/* Cliente Details View */}
           {currentView === 'cliente-detalhes' && selectedCliente && (
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <Button variant="outline" onClick={() => setCurrentView('clientes')}>
-                  ← Voltar
-                </Button>
-                <Button onClick={() => exportClienteToPDF(selectedCliente)}>
-                  <Download className="mr-2" size={16} />
-                  Exportar PDF
-                </Button>
-              </div>
+              <Button variant="outline" className="mb-4" onClick={() => setCurrentView('clientes')}>
+                ← Voltar
+              </Button>
               <Card className="mb-6">
                 <CardHeader>
                   <CardTitle>Detalhes do Cliente</CardTitle>
