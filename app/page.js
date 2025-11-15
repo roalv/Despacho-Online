@@ -250,7 +250,7 @@ export default function DespachoOnline() {
         body: JSON.stringify(body)
       })
       
-      alert('Documento enviado com sucesso!')
+      toast.success('Documento enviado com sucesso!')
       
       // Refresh details
       if (tipo === 'cliente') {
@@ -259,7 +259,7 @@ export default function DespachoOnline() {
         viewDespachoDetails(entityId)
       }
     } catch (error) {
-      alert('Erro ao enviar documento: ' + error.message)
+      toast.success('Erro ao enviar documento: ' + error.message)
     } finally {
       setLoading(false)
     }
@@ -288,10 +288,10 @@ export default function DespachoOnline() {
         setShowDespachoDialog(false)
         setDespachoForm({ clienteId: '', numeroSeries: '', estado: 'Faltando Documento' })
         fetchDespachos()
-        alert('Despacho criado com sucesso!')
+        toast.success('Despacho criado com sucesso!')
       }
     } catch (error) {
-      alert('Erro ao criar despacho: ' + error.message)
+      toast.success('Erro ao criar despacho: ' + error.message)
     } finally {
       setLoading(false)
     }
@@ -312,7 +312,7 @@ export default function DespachoOnline() {
       if (selectedDespacho?.id === id) {
         viewDespachoDetails(id)
       }
-      alert('Estado atualizado!')
+      toast.success('Estado atualizado!')
     }
   }
 
@@ -339,7 +339,7 @@ export default function DespachoOnline() {
     
     if (res.ok) {
       fetchDespachos()
-      alert('Despacho excluído com sucesso!')
+      toast.success('Despacho excluído com sucesso!')
     }
   }
 
@@ -374,10 +374,10 @@ export default function DespachoOnline() {
         setPautaSearch('')
         setPautaResults([])
         fetchProdutos()
-        alert('Produto adicionado com sucesso! Pode adicionar outro.')
+        toast.success('Produto adicionado com sucesso! Pode adicionar outro.')
       }
     } catch (error) {
-      alert('Erro ao adicionar produto: ' + error.message)
+      toast.success('Erro ao adicionar produto: ' + error.message)
     } finally {
       setLoading(false)
     }
@@ -397,7 +397,7 @@ export default function DespachoOnline() {
     
     if (res.ok) {
       fetchProdutos()
-      alert('Produto excluído com sucesso!')
+      toast.success('Produto excluído com sucesso!')
     }
   }
 
@@ -426,10 +426,10 @@ export default function DespachoOnline() {
       } else {
         setShowPautaDialog(false)
         setPautaForm({ codigo: '', descricao: '' })
-        alert('Código adicionado à pauta com sucesso!')
+        toast.success('Código adicionado à pauta com sucesso!')
       }
     } catch (error) {
-      alert('Erro ao adicionar código: ' + error.message)
+      toast.success('Erro ao adicionar código: ' + error.message)
     } finally {
       setLoading(false)
     }
