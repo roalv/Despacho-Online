@@ -234,7 +234,7 @@ export default function DespachoOnline() {
       const uploadData = await uploadRes.json()
       
       if (uploadData.error) {
-        alert('Erro no upload: ' + uploadData.error)
+        toast.error('Erro no upload: ' + uploadData.error)
         return
       }
       
