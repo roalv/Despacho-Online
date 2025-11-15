@@ -523,6 +523,34 @@ const handlePauta = async (request, method) => {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
     return NextResponse.json(data)
   }
+
+  if (method === 'PUT') {
+    const body = await request.json()
+    const { codigo, ...updates } = body
+
+    const { data, error } = await supabase
+      .from('pauta')
+      .update(updates)
+      .eq('codigo', codigo)
+      .select()
+      .single()
+    
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(data)
+  }
+
+  if (method === 'DELETE') {
+    const body = await request.json()
+    const { codigo } = body
+
+    const { error } = await supabase
+      .from('pauta')
+      .delete()
+      .eq('codigo', codigo)
+    
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ success: true })
+  }
 }
 
 // Upload handler
