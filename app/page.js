@@ -179,7 +179,7 @@ export default function DespachoOnline() {
         setShowClienteDialog(false)
         setClienteForm({ nome: '', nif: '', telefone: '', email: '', endereco: '' })
         fetchClientes()
-        alert('Cliente criado com sucesso!')
+        toast.success('Cliente criado com sucesso!')
       }
     } catch (error) {
       alert('Erro ao criar cliente: ' + error.message)
