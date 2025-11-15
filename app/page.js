@@ -1817,17 +1817,79 @@ export default function DespachoOnline() {
               <h2 className="text-3xl font-bold mb-6">Perfil do Usuário</h2>
               <Card>
                 <CardHeader>
-                  <CardTitle>Informações da Conta</CardTitle>
+                  <div className="flex justify-between items-center">
+                    <CardTitle>Informações da Conta</CardTitle>
+                    {!editingUser && (
+                      <Button variant="outline" onClick={() => {
+                        setEditingUser(true)
+                        setUserForm({
+                          email: user?.email || '',
+                          nome: user?.nome || '',
+                          password: ''
+                        })
+                      }}>
+                        <Edit className="mr-2" size={16} />
+                        Editar Perfil
+                      </Button>
+                    )}
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <Label className="text-gray-500">Email</Label>
-                    <p className="font-medium">{user?.email}</p>
-                  </div>
-                  <div>
-                    <Label className="text-gray-500">Nome</Label>
-                    <p className="font-medium">{user?.user_metadata?.nome || 'Não informado'}</p>
-                  </div>
+                  {editingUser ? (
+                    <form onSubmit={handleUpdateUser} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="user-email">Email</Label>
+                        <Input
+                          id="user-email"
+                          type="email"
+                          value={userForm.email}
+                          onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
+                          placeholder="Novo email"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="user-nome">Nome</Label>
+                        <Input
+                          id="user-nome"
+                          value={userForm.nome}
+                          onChange={(e) => setUserForm({ ...userForm, nome: e.target.value })}
+                          placeholder="Novo nome"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="user-password">Nova Senha (opcional)</Label>
+                        <Input
+                          id="user-password"
+                          type="password"
+                          value={userForm.password}
+                          onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
+                          placeholder="Deixe em branco para manter a senha atual"
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button type="submit" disabled={loading}>
+                          {loading ? 'Salvando...' : 'Salvar Alterações'}
+                        </Button>
+                        <Button type="button" variant="outline" onClick={() => {
+                          setEditingUser(false)
+                          setUserForm({ email: '', nome: '', password: '' })
+                        }}>
+                          Cancelar
+                        </Button>
+                      </div>
+                    </form>
+                  ) : (
+                    <>
+                      <div>
+                        <Label className="text-gray-500">Email</Label>
+                        <p className="font-medium">{user?.email}</p>
+                      </div>
+                      <div>
+                        <Label className="text-gray-500">Nome</Label>
+                        <p className="font-medium">{user?.nome || 'Não informado'}</p>
+                      </div>
+                    </>
+                  )}
                   <div className="pt-4 border-t">
                     <Button variant="destructive" onClick={handleLogout}>
                       <LogOut className="mr-2" size={16} />
