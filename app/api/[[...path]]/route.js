@@ -157,11 +157,15 @@ const handleClientes = async (request, method) => {
 // Cliente by ID
 const handleClienteById = async (request, method, id) => {
   if (method === 'GET') {
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     // Get cliente with documents
     const { data: cliente, error: clienteError } = await supabase
       .from('clientes')
       .select('*')
       .eq('id', id)
+      .eq('userId', userId)
       .single()
     
     if (clienteError) return NextResponse.json({ error: clienteError.message }, { status: 500 })
