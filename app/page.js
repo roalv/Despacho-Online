@@ -131,15 +131,16 @@ export default function DespachoOnline() {
       const data = await res.json()
       
       if (data.error) {
-        alert(data.error)
+        toast.error(data.error)
       } else {
         setUser(data.user)
         setCurrentView('dashboard')
         fetchClientes()
         fetchDespachos()
+        toast.success('Login realizado com sucesso!')
       }
     } catch (error) {
-      alert('Erro na autenticação: ' + error.message)
+      toast.error('Erro na autenticação: ' + error.message)
     } finally {
       setLoading(false)
     }
