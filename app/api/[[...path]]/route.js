@@ -305,10 +305,14 @@ const handleDespachos = async (request, method) => {
 // Despacho by ID
 const handleDespachoById = async (request, method, id) => {
   if (method === 'GET') {
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const { data: despacho, error: despachoError } = await supabase
       .from('despachos')
       .select('*, clientes(nome)')
       .eq('id', id)
+      .eq('userId', userId)
       .single()
     
     if (despachoError) return NextResponse.json({ error: despachoError.message }, { status: 500 })
