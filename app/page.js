@@ -542,7 +542,81 @@ export default function DespachoOnline() {
         toast.success('Código adicionado à pauta com sucesso!')
       }
     } catch (error) {
-      toast.success('Erro ao adicionar código: ' + error.message)
+      toast.error('Erro ao adicionar código: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleUpdatePauta = async (codigo) => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/pauta', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ codigo, ...editingPauta })
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setEditingPauta(null)
+        searchPauta(pautaSearch)
+        toast.success('Código atualizado com sucesso!')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar código: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeletePauta = async (codigo) => {
+    if (!confirm('Tem certeza que deseja excluir este código?')) return
+    
+    const res = await fetch('/api/pauta', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ codigo })
+    })
+    
+    if (res.ok) {
+      searchPauta(pautaSearch)
+      toast.success('Código excluído com sucesso!')
+    }
+  }
+
+  const handleUpdateUser = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    
+    try {
+      const updates = { id: user.id }
+      if (userForm.email) updates.email = userForm.email
+      if (userForm.nome) updates.nome = userForm.nome
+      if (userForm.password) updates.password = userForm.password
+
+      const res = await fetch('/api/auth', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setUser(data.user)
+        setEditingUser(false)
+        setUserForm({ email: '', nome: '', password: '' })
+        toast.success('Perfil atualizado com sucesso!')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar perfil: ' + error.message)
     } finally {
       setLoading(false)
     }
