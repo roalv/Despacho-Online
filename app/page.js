@@ -174,7 +174,7 @@ export default function DespachoOnline() {
       const data = await res.json()
       
       if (data.error) {
-        alert(data.error)
+        toast.error(data.error)
       } else {
         setShowClienteDialog(false)
         setClienteForm({ nome: '', nif: '', telefone: '', email: '', endereco: '' })
@@ -283,7 +283,7 @@ export default function DespachoOnline() {
       const data = await res.json()
       
       if (data.error) {
-        alert(data.error)
+        toast.error(data.error)
       } else {
         setShowDespachoDialog(false)
         setDespachoForm({ clienteId: '', numeroSeries: '', estado: 'Faltando Documento' })
@@ -366,7 +366,7 @@ export default function DespachoOnline() {
       const data = await res.json()
       
       if (data.error) {
-        alert(data.error)
+        toast.error(data.error)
       } else {
         // Manter o dialog aberto e apenas limpar os campos, mantendo o despachoId
         const currentDespachoId = produtoForm.despachoId
@@ -422,7 +422,7 @@ export default function DespachoOnline() {
       const data = await res.json()
       
       if (data.error) {
-        alert(data.error)
+        toast.error(data.error)
       } else {
         setShowPautaDialog(false)
         setPautaForm({ codigo: '', descricao: '' })
