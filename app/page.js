@@ -87,7 +87,10 @@ export default function DespachoOnline() {
   }
 
   const fetchDocumentos = async () => {
-    const res = await fetch('/api/documentos')
+    if (!user?.id) return
+    const res = await fetch('/api/documentos', {
+      headers: { 'x-user-id': user.id }
+    })
     const data = await res.json()
     setDocumentos(data)
   }
