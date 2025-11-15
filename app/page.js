@@ -1368,7 +1368,15 @@ export default function DespachoOnline() {
                               </Select>
                             </TableCell>
                             <TableCell className="text-right space-x-2">
-                              <Button size="sm" variant="outline" onClick={() => { setEditingDespacho(despacho); fetchClientes(); }}>
+                              <Button size="sm" variant="outline" onClick={() => { 
+                                setEditingDespacho({
+                                  id: despacho.id,
+                                  clienteId: despacho.clienteId,
+                                  numeroSeries: despacho.numeroSeries,
+                                  estado: despacho.estado
+                                }); 
+                                fetchClientes(); 
+                              }}>
                                 <Edit size={14} />
                               </Button>
                               <Button size="sm" variant="outline" onClick={() => viewDespachoDetails(despacho.id)}>
