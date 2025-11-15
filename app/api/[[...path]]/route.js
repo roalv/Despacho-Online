@@ -432,6 +432,33 @@ const handleProdutos = async (request, method) => {
     return NextResponse.json(data)
   }
 
+  if (method === 'PUT') {
+    const body = await request.json()
+    const { id, ...updates } = body
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+
+    // Verificar se o produto pertence a um despacho do usuário
+    const { data: produto } = await supabase
+      .from('produtos')
+      .select('despachoId, despachos!inner(userId)')
+      .eq('id', id)
+      .eq('despachos.userId', userId)
+      .single()
+    
+    if (!produto) return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 })
+
+    const { data, error } = await supabase
+      .from('produtos')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+    
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(data)
+  }
+
   if (method === 'DELETE') {
     const body = await request.json()
     const { id } = body
