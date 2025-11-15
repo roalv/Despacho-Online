@@ -46,6 +46,14 @@ export default function DespachoOnline() {
   const [searchTerm, setSearchTerm] = useState('')
   const [pautaSearch, setPautaSearch] = useState('')
   
+  // Editing state
+  const [editingCliente, setEditingCliente] = useState(null)
+  const [editingDespacho, setEditingDespacho] = useState(null)
+  const [editingProduto, setEditingProduto] = useState(null)
+  const [editingPauta, setEditingPauta] = useState(null)
+  const [editingUser, setEditingUser] = useState(false)
+  const [userForm, setUserForm] = useState({ email: '', nome: '', password: '' })
+  
   // Dialogs
   const [showClienteDialog, setShowClienteDialog] = useState(false)
   const [showDespachoDialog, setShowDespachoDialog] = useState(false)
