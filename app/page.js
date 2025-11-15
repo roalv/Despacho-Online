@@ -810,59 +810,112 @@ export default function DespachoOnline() {
     toast.success('PDF exportado com sucesso!')
   }
 
-  // Export Despacho to PDF
+  // Export Despacho to PDF with complete client data and all client products
   const exportDespachoToPDF = (despacho) => {
     const doc = new jsPDF()
     
-    // Título
-    doc.setFontSize(20)
-    doc.text('Despacho - Detalhes', 14, 20)
+    // Cliente do despacho
+    const cliente = despacho.clientes
     
-    // Detalhes do Despacho
+    // Título principal
+    doc.setFontSize(22)
+    doc.setTextColor(59, 130, 246)
+    doc.text('Relatório de Despacho', 14, 20)
+    
+    // Linha decorativa
+    doc.setDrawColor(59, 130, 246)
+    doc.setLineWidth(0.5)
+    doc.line(14, 25, 196, 25)
+    
+    // === SEÇÃO 1: INFORMAÇÕES DO CLIENTE ===
     doc.setFontSize(14)
-    doc.text('Detalhes do Despacho', 14, 35)
-    doc.setFontSize(11)
-    doc.text(`Cliente: ${despacho.clientes?.nome || 'N/A'}`, 14, 45)
-    doc.text(`Número de Série: ${despacho.numeroSeries || 'N/A'}`, 14, 52)
-    doc.text(`Estado: ${despacho.estado}`, 14, 59)
+    doc.setTextColor(59, 130, 246)
+    doc.text('Dados do Cliente', 14, 35)
     
-    // Produtos Classificados
-    if (despacho.produtos && despacho.produtos.length > 0) {
-      doc.setFontSize(14)
-      doc.text('Produtos Classificados', 14, 75)
-      
-      const tableData = despacho.produtos.map(p => [
-        p.nome,
-        p.codigo || 'N/A',
-        `${p.peso}`,
-        `${p.quantidade}`,
-        `$${p.valor}`
-      ])
+    doc.setFontSize(10)
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Nome: ${cliente?.nome || 'N/A'}`, 14, 43)
+    doc.text(`NIF: ${cliente?.nif || 'N/A'}`, 14, 49)
+    doc.text(`Telefone: ${cliente?.telefone || 'N/A'}`, 14, 55)
+    doc.text(`Email: ${cliente?.email || 'N/A'}`, 14, 61)
+    doc.text(`Endereço: ${cliente?.endereco || 'N/A'}`, 14, 67)
+    
+    // === SEÇÃO 2: INFORMAÇÕES DO DESPACHO ===
+    doc.setFontSize(14)
+    doc.setTextColor(59, 130, 246)
+    doc.text('Informações do Despacho', 14, 80)
+    
+    doc.setFontSize(10)
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Número de Série: ${despacho.numeroSeries || 'N/A'}`, 14, 88)
+    doc.text(`Estado: ${despacho.estado}`, 14, 94)
+    doc.text(`Data de Criação: ${new Date(despacho.createdAt).toLocaleDateString('pt-BR')}`, 14, 100)
+    
+    // === SEÇÃO 3: TODOS OS PRODUTOS DO CLIENTE ===
+    doc.setFontSize(14)
+    doc.setTextColor(59, 130, 246)
+    doc.text('Todos os Produtos Classificados do Cliente', 14, 113)
+    
+    // Buscar TODOS os despachos do cliente
+    const clienteDespachos = despachos.filter(d => d.clienteId === cliente?.id)
+    
+    // Buscar TODOS os produtos de todos os despachos do cliente
+    const todosProdutosCliente = produtos.filter(p => 
+      clienteDespachos.some(d => d.id === p.despachoId)
+    )
+    
+    if (todosProdutosCliente.length > 0) {
+      const tableData = todosProdutosCliente.map(p => {
+        const desp = despachos.find(d => d.id === p.despachoId)
+        return [
+          p.nome,
+          p.codigo || 'N/A',
+          `${p.peso} kg`,
+          p.quantidade.toString(),
+          `$${p.valor}`,
+          desp?.numeroSeries || 'N/A'
+        ]
+      })
       
       // Calcular totais
-      const totalPeso = despacho.produtos.reduce((sum, p) => sum + (parseFloat(p.peso) || 0), 0).toFixed(2)
-      const totalQtd = despacho.produtos.reduce((sum, p) => sum + (parseInt(p.quantidade) || 0), 0)
-      const totalValor = despacho.produtos.reduce((sum, p) => sum + (parseFloat(p.valor) || 0), 0).toFixed(2)
-      
-      // Adicionar linha de totais
-      tableData.push(['TOTAL', '-', totalPeso, totalQtd, `$${totalValor}`])
+      const totalPeso = todosProdutosCliente.reduce((sum, p) => sum + (parseFloat(p.peso) || 0), 0).toFixed(2)
+      const totalQtd = todosProdutosCliente.reduce((sum, p) => sum + (parseInt(p.quantidade) || 0), 0)
+      const totalValor = todosProdutosCliente.reduce((sum, p) => sum + (parseFloat(p.valor) || 0), 0).toFixed(2)
       
       doc.autoTable({
-        head: [['Produto', 'HS Code', 'Peso (kg)', 'Qtd', 'Valor']],
+        head: [['Produto', 'Código HS', 'Peso', 'Qtd', 'Valor', 'Nº Série']],
         body: tableData,
-        startY: 82,
+        startY: 118,
         theme: 'grid',
-        styles: { fontSize: 9 },
-        headStyles: { fillColor: [59, 130, 246] },
-        foot: [[{
-          content: `Totais: ${totalPeso} kg | ${totalQtd} unidades | $${totalValor}`,
-          colSpan: 5,
-          styles: { halign: 'right', fontStyle: 'bold' }
-        }]]
+        styles: { fontSize: 9, cellPadding: 3 },
+        headStyles: { fillColor: [59, 130, 246], fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [245, 247, 250] },
+        margin: { left: 14, right: 14 }
       })
+      
+      // Linha de totais abaixo da tabela
+      const finalY = doc.lastAutoTable.finalY + 8
+      doc.setFontSize(11)
+      doc.setFont(undefined, 'bold')
+      doc.setTextColor(0, 0, 0)
+      doc.text(`TOTAIS: ${todosProdutosCliente.length} produtos | Peso: ${totalPeso} kg | Quantidade: ${totalQtd} | Valor Total: $${totalValor}`, 14, finalY)
+    } else {
+      doc.setFontSize(10)
+      doc.setTextColor(128, 128, 128)
+      doc.text('Nenhum produto classificado para este cliente.', 14, 123)
     }
     
-    doc.save(`despacho_${despacho.numeroSeries || despacho.id}.pdf`)
+    // === FOOTER ===
+    const pageHeight = doc.internal.pageSize.height
+    doc.setFontSize(8)
+    doc.setTextColor(128, 128, 128)
+    doc.text(`Documento gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`, 14, pageHeight - 10)
+    doc.text(`Sistema: Despacho Online | Cliente: ${cliente?.nome}`, 14, pageHeight - 6)
+    
+    // Salvar PDF
+    const fileName = `despacho_${despacho.numeroSeries?.replace(/\//g, '_') || despacho.id}_${cliente?.nome.replace(/\s+/g, '_')}.pdf`
+    doc.save(fileName)
+    toast.success('PDF exportado com sucesso!')
   }
 
   // Filter functions
