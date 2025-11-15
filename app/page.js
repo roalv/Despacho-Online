@@ -208,6 +208,35 @@ export default function DespachoOnline() {
     }
   }
 
+  const handleUpdateCliente = async (id) => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/clientes', {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': user.id
+        },
+        body: JSON.stringify({ id, ...editingCliente })
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setEditingCliente(null)
+        fetchClientes()
+        toast.success('Cliente atualizado com sucesso!')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar cliente: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleDeleteCliente = async (id) => {
     if (!confirm('Tem certeza que deseja excluir este cliente?')) return
     
