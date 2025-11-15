@@ -202,7 +202,7 @@ export default function DespachoOnline() {
     
     if (res.ok) {
       fetchClientes()
-      alert('Cliente excluído com sucesso!')
+      toast.success('Cliente excluído com sucesso!')
     }
   }
 
