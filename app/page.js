@@ -15,6 +15,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users, Package, FileText, LayoutDashboard, User, LogOut, Plus, Search, Upload, Download, Trash2, Edit, Eye, FileCheck } from 'lucide-react'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function DespachoOnline() {
   const [currentView, setCurrentView] = useState('login')
