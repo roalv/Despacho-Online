@@ -726,6 +726,90 @@ export default function DespachoOnline() {
     doc.save('classificacao.pdf')
   }
 
+  // Export Cliente to PDF with products
+  const exportClienteToPDF = async (cliente) => {
+    const doc = new jsPDF()
+    
+    // Título
+    doc.setFontSize(20)
+    doc.text('Relatório do Cliente', 14, 20)
+    
+    // Linha decorativa
+    doc.setDrawColor(59, 130, 246)
+    doc.setLineWidth(0.5)
+    doc.line(14, 25, 196, 25)
+    
+    // Detalhes do Cliente
+    doc.setFontSize(14)
+    doc.setTextColor(59, 130, 246)
+    doc.text('Informações do Cliente', 14, 35)
+    
+    doc.setFontSize(11)
+    doc.setTextColor(0, 0, 0)
+    doc.text(`Nome: ${cliente.nome || 'N/A'}`, 14, 45)
+    doc.text(`NIF: ${cliente.nif || 'N/A'}`, 14, 52)
+    doc.text(`Telefone: ${cliente.telefone || 'N/A'}`, 14, 59)
+    doc.text(`Email: ${cliente.email || 'N/A'}`, 14, 66)
+    doc.text(`Endereço: ${cliente.endereco || 'N/A'}`, 14, 73)
+    
+    // Buscar produtos deste cliente
+    const clienteDespachos = despachos.filter(d => d.clienteId === cliente.id)
+    const clienteProdutos = produtos.filter(p => 
+      clienteDespachos.some(d => d.id === p.despachoId)
+    )
+    
+    // Produtos Classificados
+    if (clienteProdutos.length > 0) {
+      doc.setFontSize(14)
+      doc.setTextColor(59, 130, 246)
+      doc.text('Produtos Classificados', 14, 88)
+      
+      const tableData = clienteProdutos.map(p => {
+        const despacho = despachos.find(d => d.id === p.despachoId)
+        return [
+          p.nome,
+          p.codigo || 'N/A',
+          `${p.peso} kg`,
+          p.quantidade,
+          `$${p.valor}`,
+          despacho?.numeroSeries || 'N/A'
+        ]
+      })
+      
+      doc.autoTable({
+        head: [['Produto', 'Código HS', 'Peso', 'Qtd', 'Valor', 'Nº Série']],
+        body: tableData,
+        startY: 93,
+        theme: 'grid',
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [59, 130, 246] }
+      })
+      
+      // Calcular totais
+      const totalPeso = clienteProdutos.reduce((sum, p) => sum + (parseFloat(p.peso) || 0), 0).toFixed(2)
+      const totalQtd = clienteProdutos.reduce((sum, p) => sum + (parseInt(p.quantidade) || 0), 0)
+      const totalValor = clienteProdutos.reduce((sum, p) => sum + (parseFloat(p.valor) || 0), 0).toFixed(2)
+      
+      const finalY = doc.lastAutoTable.finalY + 10
+      doc.setFontSize(11)
+      doc.setFont(undefined, 'bold')
+      doc.text(`Total: ${clienteProdutos.length} produtos | Peso: ${totalPeso} kg | Quantidade: ${totalQtd} | Valor: $${totalValor}`, 14, finalY)
+    } else {
+      doc.setFontSize(11)
+      doc.setTextColor(128, 128, 128)
+      doc.text('Nenhum produto classificado para este cliente.', 14, 93)
+    }
+    
+    // Footer
+    const pageHeight = doc.internal.pageSize.height
+    doc.setFontSize(8)
+    doc.setTextColor(128, 128, 128)
+    doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`, 14, pageHeight - 10)
+    
+    doc.save(`cliente_${cliente.nome.replace(/\s+/g, '_')}.pdf`)
+    toast.success('PDF exportado com sucesso!')
+  }
+
   // Export Despacho to PDF
   const exportDespachoToPDF = (despacho) => {
     const doc = new jsPDF()
