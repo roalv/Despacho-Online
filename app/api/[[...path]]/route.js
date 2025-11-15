@@ -383,9 +383,13 @@ const handleDocumentosDespachos = async (request, method) => {
 // Produtos endpoints
 const handleProdutos = async (request, method) => {
   if (method === 'GET') {
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
     const { data, error } = await supabase
       .from('produtos')
-      .select('*, despachos(numeroSeries, clientes(nome))')
+      .select('*, despachos!inner(numeroSeries, userId, clientes(nome))')
+      .eq('despachos.userId', userId)
       .order('createdAt', { ascending: false })
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
