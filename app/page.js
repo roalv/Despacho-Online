@@ -594,7 +594,9 @@ export default function DespachoOnline() {
 
   // Main Dashboard Layout
   return (
-    <div className="flex h-screen bg-gray-50">
+    <>
+      <Toaster position="top-right" />
+      <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
         <div className="p-6 border-b">
