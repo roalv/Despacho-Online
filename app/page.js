@@ -811,11 +811,14 @@ export default function DespachoOnline() {
   }
 
   // Export Despacho to PDF with complete client data and all client products
-  const exportDespachoToPDF = (despacho) => {
+  const exportDespachoToPDF = async (despacho) => {
     const doc = new jsPDF()
     
     // Cliente do despacho
     const cliente = despacho.clientes
+    
+    console.log('Cliente data:', cliente)
+    console.log('Despacho data:', despacho)
     
     // Título principal
     doc.setFontSize(22)
