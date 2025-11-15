@@ -13,8 +13,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Users, Package, FileText, LayoutDashboard, User, LogOut, Plus, Search, Upload, Download, Trash2, Edit, Eye, FileCheck } from 'lucide-react'
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import { jsPDF } from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function DespachoOnline() {
