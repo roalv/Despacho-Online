@@ -338,7 +338,7 @@ const handleDespachoById = async (request, method, id) => {
     
     const { data: despacho, error: despachoError } = await supabase
       .from('despachos')
-      .select('*, clientes(nome)')
+      .select('*, clientes(*)')
       .eq('id', id)
       .eq('userId', userId)
       .single()
