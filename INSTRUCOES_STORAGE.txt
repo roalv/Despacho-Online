@@ -1,0 +1,87 @@
+╔════════════════════════════════════════════════════════════════════╗
+║     🚨 IMPORTANTE: CONFIGURAR STORAGE NO SUPABASE 🚨              ║
+║                                                                    ║
+║  Os uploads de documentos estão falhando porque as políticas      ║
+║  de segurança (RLS) dos buckets precisam ser configuradas.        ║
+╚════════════════════════════════════════════════════════════════════╝
+
+🔴 ERRO ATUAL:
+"new row violates row-level security policy"
+
+📋 SOLUÇÃO - PASSO A PASSO:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPÇÃO 1: CONFIGURAÇÃO RÁPIDA (Recomendado - 2 minutos)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣  Acesse: https://supabase.com/dashboard
+
+2️⃣  Selecione seu projeto: yxdufeiphenwlnnqbwji
+
+3️⃣  No menu lateral, clique em: "Storage"
+
+4️⃣  Clique no bucket "documentos-clientes"
+
+5️⃣  Clique na aba "Policies" (Políticas)
+
+6️⃣  Clique em "+ New Policy"
+
+7️⃣  Selecione: "For full customization"
+
+8️⃣  Preencha:
+    • Policy name: Allow all operations
+    • Policy definition: Selecione "All" para INSERT, SELECT, UPDATE, DELETE
+    • Target roles: public
+    • USING expression: true
+    • WITH CHECK expression: true
+
+9️⃣  Clique em "Save policy"
+
+🔁 REPITA os passos 4-9 para o bucket "documentos-despachos"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPÇÃO 2: USANDO SQL (Mais rápido se você preferir SQL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣  Acesse: https://supabase.com/dashboard
+
+2️⃣  Selecione seu projeto: yxdufeiphenwlnnqbwji
+
+3️⃣  No menu lateral esquerdo, clique em: "SQL Editor"
+
+4️⃣  Clique no botão: "+ New Query"
+
+5️⃣  COPIE E COLE o conteúdo do arquivo: CONFIGURAR_STORAGE.sql
+
+6️⃣  Clique no botão verde "RUN" (ou pressione Ctrl+Enter)
+
+7️⃣  Aguarde aparecer "Success"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VERIFICAR SE DEU CERTO:
+
+Após executar uma das opções acima:
+
+1. Volte para a aplicação: https://customs-portal-2.preview.emergentagent.com
+2. Faça login
+3. Vá em "Clientes" → Clique no ícone 👁️ de um cliente
+4. Clique em "Enviar Documento"
+5. Selecione um arquivo (PDF, imagem, etc.)
+6. Você deve ver: ✅ "Documento enviado com sucesso!"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 IMPORTANTE:
+
+Esta configuração permite que QUALQUER pessoa faça upload para os buckets.
+Isto é adequado para um MVP/protótipo.
+
+Para produção, você deveria implementar políticas mais restritivas baseadas
+em autenticação de usuários.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️  Se continuar com erro após executar, me avise!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
