@@ -1882,9 +1882,45 @@ export default function DespachoOnline() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Todos os Documentos</h2>
               <Card>
+                <CardHeader>
+                  <div className="flex items-center space-x-2">
+                    <Search size={20} className="text-gray-400" />
+                    <Input
+                      placeholder="Buscar por nome do cliente ou nº de série..."
+                      value={filtroDocumentos}
+                      onChange={(e) => setFiltroDocumentos(e.target.value)}
+                      className="max-w-md"
+                    />
+                  </div>
+                </CardHeader>
                 <CardContent className="pt-6">
                   <div className="space-y-3">
-                    {documentos.map(doc => (
+                    {documentos.filter(doc => {
+                      if (!filtroDocumentos) return true
+                      const termo = filtroDocumentos.toLowerCase()
+                      
+                      // Filtrar por nome do cliente
+                      if (doc.tipo === 'Cliente' && doc.clientes?.nome?.toLowerCase().includes(termo)) {
+                        return true
+                      }
+                      
+                      // Filtrar por nome do cliente ou número de série do despacho
+                      if (doc.tipo === 'Despacho') {
+                        if (doc.despachos?.clientes?.nome?.toLowerCase().includes(termo)) {
+                          return true
+                        }
+                        if (doc.despachos?.numeroSeries?.toLowerCase().includes(termo)) {
+                          return true
+                        }
+                      }
+                      
+                      // Filtrar por nome do arquivo
+                      if (doc.fileName?.toLowerCase().includes(termo)) {
+                        return true
+                      }
+                      
+                      return false
+                    }).map(doc => (
                       <div key={doc.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                         <div className="flex items-center space-x-4">
                           <FileText size={24} className="text-blue-600" />
@@ -1911,6 +1947,34 @@ export default function DespachoOnline() {
                         </a>
                       </div>
                     ))}
+                    {documentos.filter(doc => {
+                      if (!filtroDocumentos) return true
+                      const termo = filtroDocumentos.toLowerCase()
+                      
+                      if (doc.tipo === 'Cliente' && doc.clientes?.nome?.toLowerCase().includes(termo)) {
+                        return true
+                      }
+                      
+                      if (doc.tipo === 'Despacho') {
+                        if (doc.despachos?.clientes?.nome?.toLowerCase().includes(termo)) {
+                          return true
+                        }
+                        if (doc.despachos?.numeroSeries?.toLowerCase().includes(termo)) {
+                          return true
+                        }
+                      }
+                      
+                      if (doc.fileName?.toLowerCase().includes(termo)) {
+                        return true
+                      }
+                      
+                      return false
+                    }).length === 0 && filtroDocumentos && (
+                      <div className="text-center py-8 text-gray-500">
+                        <FileText size={48} className="mx-auto mb-4 opacity-50" />
+                        <p>Nenhum documento encontrado para "{filtroDocumentos}"</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
