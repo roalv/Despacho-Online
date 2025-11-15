@@ -182,7 +182,7 @@ export default function DespachoOnline() {
         toast.success('Cliente criado com sucesso!')
       }
     } catch (error) {
-      alert('Erro ao criar cliente: ' + error.message)
+      toast.error('Erro ao criar cliente: ' + error.message)
     } finally {
       setLoading(false)
     }
