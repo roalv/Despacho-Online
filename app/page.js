@@ -817,9 +817,6 @@ export default function DespachoOnline() {
     // Cliente do despacho
     const cliente = despacho.clientes
     
-    console.log('Cliente data:', cliente)
-    console.log('Despacho data:', despacho)
-    
     // Título principal
     doc.setFontSize(22)
     doc.setTextColor(59, 130, 246)
