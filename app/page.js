@@ -136,6 +136,30 @@ export default function DespachoOnline() {
     }
   }, [user, currentView])
 
+  // Função para limpar todos os dados
+  const clearAllData = () => {
+    setClientes([])
+    setDespachos([])
+    setProdutos([])
+    setDocumentos([])
+    setPautaResults([])
+    setSelectedCliente(null)
+    setSelectedDespacho(null)
+    setClienteForm({ nome: '', nif: '', telefone: '', email: '', endereco: '' })
+    setDespachoForm({ clienteId: '', numeroSeries: '', estado: 'Faltando Documento' })
+    setProdutoForm({ despachoId: '', nome: '', peso: '', quantidade: '', valor: '', codigo: '' })
+    setSearchTerm('')
+    setPautaSearch('')
+    setEditingCliente(null)
+    setEditingDespacho(null)
+    setEditingProduto(null)
+    setEditingPauta(null)
+    setEditingUser(false)
+    setUserForm({ email: '', nome: '', password: '' })
+    setFiltroClassificacao('')
+    setFiltroDocumentos('')
+  }
+
   // Auth functions
   const handleAuth = async (e) => {
     e.preventDefault()
@@ -156,10 +180,14 @@ export default function DespachoOnline() {
       if (data.error) {
         toast.error(data.error)
       } else {
+        // Limpar todos os dados antes de definir o novo usuário
+        clearAllData()
+        
+        // Definir novo usuário
         setUser(data.user)
         setCurrentView('dashboard')
-        fetchClientes()
-        fetchDespachos()
+        
+        // Carregar dados do novo usuário
         toast.success('Login realizado com sucesso!')
       }
     } catch (error) {
@@ -175,8 +203,12 @@ export default function DespachoOnline() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'logout' })
     })
+    
+    // Limpar todos os dados ao fazer logout
+    clearAllData()
     setUser(null)
     setCurrentView('login')
+    toast.success('Logout realizado com sucesso!')
   }
 
   // Cliente functions
