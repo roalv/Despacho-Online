@@ -75,6 +75,34 @@ const handleAuth = async (request, method) => {
       return NextResponse.json({ user: null })
     }
   }
+
+  if (method === 'PUT') {
+    const body = await request.json()
+    const { id, email, password, nome } = body
+    
+    if (!id) return NextResponse.json({ error: 'ID do usuário é obrigatório' }, { status: 400 })
+
+    const updates = {}
+    if (email) updates.email = email
+    if (nome) updates.nome = nome
+    if (password) {
+      // Hash da nova senha
+      updates.password = await bcrypt.hash(password, 10)
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    
+    // Não retornar senha
+    const { password: _, ...userWithoutPassword } = data
+    return NextResponse.json({ user: userWithoutPassword })
+  }
 }
 
 // Clientes endpoints
