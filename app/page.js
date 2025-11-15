@@ -113,6 +113,15 @@ export default function DespachoOnline() {
     }
   }, [pautaSearch])
 
+  // Carregar dados do dashboard automaticamente
+  useEffect(() => {
+    if (user && currentView === 'dashboard') {
+      fetchClientes()
+      fetchDespachos()
+      fetchProdutos()
+    }
+  }, [user, currentView])
+
   // Auth functions
   const handleAuth = async (e) => {
     e.preventDefault()
