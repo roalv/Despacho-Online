@@ -1036,23 +1036,66 @@ export default function DespachoOnline() {
                     </TableHeader>
                     <TableBody>
                       {filteredClientes.map(cliente => (
-                        <TableRow key={cliente.id}>
-                          <TableCell className="font-medium">{cliente.nome}</TableCell>
-                          <TableCell>{cliente.nif}</TableCell>
-                          <TableCell>{cliente.telefone}</TableCell>
-                          <TableCell>{cliente.email}</TableCell>
-                          <TableCell className="text-right space-x-2">
-                            <Button size="sm" variant="outline" onClick={() => viewClienteDetails(cliente.id)}>
-                              <Eye size={14} />
-                            </Button>
-                            <Button size="sm" variant="destructive" onClick={() => handleDeleteCliente(cliente.id)}>
-                              <Trash2 size={14} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+                        editingCliente?.id === cliente.id ? (
+                          <TableRow key={cliente.id} className="bg-blue-50">
+                            <TableCell>
+                              <Input
+                                value={editingCliente.nome}
+                                onChange={(e) => setEditingCliente({ ...editingCliente, nome: e.target.value })}
+                                placeholder="Nome"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={editingCliente.nif}
+                                onChange={(e) => setEditingCliente({ ...editingCliente, nif: e.target.value })}
+                                placeholder="NIF"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={editingCliente.telefone}
+                                onChange={(e) => setEditingCliente({ ...editingCliente, telefone: e.target.value })}
+                                placeholder="Telefone"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={editingCliente.email}
+                                onChange={(e) => setEditingCliente({ ...editingCliente, email: e.target.value })}
+                                placeholder="Email"
+                              />
+                            </TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" onClick={() => handleUpdateCliente(cliente.id)} disabled={loading}>
+                                Salvar
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => setEditingCliente(null)}>
+                                Cancelar
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          <TableRow key={cliente.id}>
+                            <TableCell className="font-medium">{cliente.nome}</TableCell>
+                            <TableCell>{cliente.nif}</TableCell>
+                            <TableCell>{cliente.telefone}</TableCell>
+                            <TableCell>{cliente.email}</TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" variant="outline" onClick={() => setEditingCliente(cliente)}>
+                                <Edit size={14} />
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => viewClienteDetails(cliente.id)}>
+                                <Eye size={14} />
+                              </Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleDeleteCliente(cliente.id)}>
+                                <Trash2 size={14} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
                       ))}
-                    </TableBody>
-                  </Table>
+                    </TableBody>                  </Table>
                 </CardContent>
               </Card>
             </div>
