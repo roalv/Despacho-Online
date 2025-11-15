@@ -65,6 +65,9 @@ export default function DespachoOnline() {
   
   // Filtro de classificação
   const [filtroClassificacao, setFiltroClassificacao] = useState('')
+  
+  // Filtro de documentos
+  const [filtroDocumentos, setFiltroDocumentos] = useState('')
 
   // Fetch data functions
   const fetchClientes = async () => {
