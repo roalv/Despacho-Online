@@ -694,8 +694,11 @@ export async function POST(request) {
 export async function PUT(request) {
   const path = request.nextUrl.pathname.replace('/api/', '')
   
+  if (path === 'auth') return handleAuth(request, 'PUT')
   if (path === 'clientes') return handleClientes(request, 'PUT')
   if (path === 'despachos') return handleDespachos(request, 'PUT')
+  if (path === 'produtos') return handleProdutos(request, 'PUT')
+  if (path === 'pauta') return handlePauta(request, 'PUT')
   
   return NextResponse.json({ error: 'Not found' }, { status: 404 })
 }
@@ -708,6 +711,7 @@ export async function DELETE(request) {
   if (path === 'despachos') return handleDespachos(request, 'DELETE')
   if (path === 'documentos-despachos') return handleDocumentosDespachos(request, 'DELETE')
   if (path === 'produtos') return handleProdutos(request, 'DELETE')
+  if (path === 'pauta') return handlePauta(request, 'DELETE')
   
   return NextResponse.json({ error: 'Not found' }, { status: 404 })
 }
