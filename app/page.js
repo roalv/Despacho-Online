@@ -1835,7 +1835,14 @@ export default function DespachoOnline() {
                             <TableCell>{produto.despachos?.clientes?.nome || 'N/A'}</TableCell>
                             <TableCell className="font-mono">{produto.despachos?.numeroSeries || 'N/A'}</TableCell>
                             <TableCell className="text-right space-x-2">
-                              <Button size="sm" variant="outline" onClick={() => setEditingProduto(produto)}>
+                              <Button size="sm" variant="outline" onClick={() => setEditingProduto({
+                                id: produto.id,
+                                nome: produto.nome,
+                                codigo: produto.codigo,
+                                peso: produto.peso,
+                                quantidade: produto.quantidade,
+                                valor: produto.valor
+                              })}>
                                 <Edit size={14} />
                               </Button>
                               <Button size="sm" variant="destructive" onClick={() => handleDeleteProduto(produto.id)}>
