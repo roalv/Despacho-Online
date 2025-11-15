@@ -461,6 +461,41 @@ export default function DespachoOnline() {
     }
   }
 
+  const handleUpdateProduto = async (id) => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/produtos', {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': user.id
+        },
+        body: JSON.stringify({
+          id,
+          ...editingProduto,
+          peso: parseFloat(editingProduto.peso) || 0,
+          quantidade: parseInt(editingProduto.quantidade) || 0,
+          valor: parseFloat(editingProduto.valor) || 0
+        })
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setEditingProduto(null)
+        fetchProdutos()
+        toast.success('Produto atualizado com sucesso!')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar produto: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleDeleteProduto = async (id) => {
     if (!confirm('Tem certeza que deseja excluir este produto?')) return
     
