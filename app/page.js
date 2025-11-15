@@ -346,6 +346,35 @@ export default function DespachoOnline() {
     }
   }
 
+  const handleUpdateDespacho = async (id) => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch('/api/despachos', {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': user.id
+        },
+        body: JSON.stringify({ id, ...editingDespacho })
+      })
+      
+      const data = await res.json()
+      
+      if (data.error) {
+        toast.error(data.error)
+      } else {
+        setEditingDespacho(null)
+        fetchDespachos()
+        toast.success('Despacho atualizado com sucesso!')
+      }
+    } catch (error) {
+      toast.error('Erro ao atualizar despacho: ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleUpdateDespachoEstado = async (id, novoEstado) => {
     const res = await fetch('/api/despachos', {
       method: 'PUT',
