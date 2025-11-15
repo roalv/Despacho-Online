@@ -127,12 +127,32 @@ export default function DespachoOnline() {
     }
   }, [pautaSearch])
 
-  // Carregar dados do dashboard automaticamente
+  // Carregar TODOS os dados quando o usuário fizer login
   useEffect(() => {
-    if (user && currentView === 'dashboard') {
+    if (user) {
+      // Carregar todos os dados quando o usuário estiver logado
       fetchClientes()
       fetchDespachos()
       fetchProdutos()
+      fetchDocumentos()
+    }
+  }, [user])
+  
+  // Recarregar dados específicos quando mudar de view
+  useEffect(() => {
+    if (user && currentView === 'clientes') {
+      fetchClientes()
+    }
+    if (user && currentView === 'despachos') {
+      fetchDespachos()
+    }
+    if (user && currentView === 'classificacao') {
+      fetchProdutos()
+      fetchDespachos()
+      fetchClientes()
+    }
+    if (user && currentView === 'documentos') {
+      fetchDocumentos()
     }
   }, [user, currentView])
 
