@@ -531,8 +531,10 @@ export default function DespachoOnline() {
   // Login/Register View
   if (currentView === 'login') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+      <>
+        <Toaster position="top-right" />
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+          <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold text-blue-600">Despacho Online</CardTitle>
             <CardDescription>Sistema de Gestão de Despachos Aduaneiros</CardDescription>
