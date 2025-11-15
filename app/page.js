@@ -1621,14 +1621,65 @@ export default function DespachoOnline() {
                         <ScrollArea className="h-48 border rounded p-2">
                           <div className="space-y-2">
                             {pautaResults.map(p => (
-                              <div
-                                key={p.id}
-                                className="p-3 bg-blue-50 hover:bg-blue-100 rounded cursor-pointer transition"
-                                onClick={() => selectHSCode(p.codigo, p.descricao)}
-                              >
-                                <p className="font-mono font-bold text-blue-600">{p.codigo}</p>
-                                <p className="text-sm text-gray-700">{p.descricao}</p>
-                              </div>
+                              editingPauta?.codigo === p.codigo ? (
+                                <div key={p.id} className="p-3 bg-green-50 rounded border-2 border-green-300">
+                                  <Input
+                                    value={editingPauta.codigo}
+                                    onChange={(e) => setEditingPauta({ ...editingPauta, codigo: e.target.value })}
+                                    placeholder="Código"
+                                    className="font-mono font-bold mb-2"
+                                  />
+                                  <Textarea
+                                    value={editingPauta.descricao}
+                                    onChange={(e) => setEditingPauta({ ...editingPauta, descricao: e.target.value })}
+                                    placeholder="Descrição"
+                                    rows={2}
+                                    className="text-sm mb-2"
+                                  />
+                                  <div className="flex space-x-2">
+                                    <Button size="sm" onClick={() => handleUpdatePauta(p.codigo)} disabled={loading}>
+                                      Salvar
+                                    </Button>
+                                    <Button size="sm" variant="outline" onClick={() => setEditingPauta(null)}>
+                                      Cancelar
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div
+                                  key={p.id}
+                                  className="p-3 bg-blue-50 hover:bg-blue-100 rounded transition group relative"
+                                >
+                                  <div onClick={() => selectHSCode(p.codigo, p.descricao)} className="cursor-pointer">
+                                    <p className="font-mono font-bold text-blue-600">{p.codigo}</p>
+                                    <p className="text-sm text-gray-700">{p.descricao}</p>
+                                  </div>
+                                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
+                                    <Button 
+                                      size="sm" 
+                                      variant="outline" 
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        setEditingPauta(p)
+                                      }}
+                                      className="h-7 w-7 p-0"
+                                    >
+                                      <Edit size={12} />
+                                    </Button>
+                                    <Button 
+                                      size="sm" 
+                                      variant="destructive" 
+                                      onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleDeletePauta(p.codigo)
+                                      }}
+                                      className="h-7 w-7 p-0"
+                                    >
+                                      <Trash2 size={12} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              )
                             ))}
                           </div>
                         </ScrollArea>
