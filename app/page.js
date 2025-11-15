@@ -473,19 +473,23 @@ export default function DespachoOnline() {
     setLoading(true)
     
     try {
+      // Enviar apenas os campos permitidos
+      const updates = {
+        id,
+        nome: editingProduto.nome,
+        codigo: editingProduto.codigo,
+        peso: parseFloat(editingProduto.peso) || 0,
+        quantidade: parseInt(editingProduto.quantidade) || 0,
+        valor: parseFloat(editingProduto.valor) || 0
+      }
+      
       const res = await fetch('/api/produtos', {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'x-user-id': user.id
         },
-        body: JSON.stringify({
-          id,
-          ...editingProduto,
-          peso: parseFloat(editingProduto.peso) || 0,
-          quantidade: parseInt(editingProduto.quantidade) || 0,
-          valor: parseFloat(editingProduto.valor) || 0
-        })
+        body: JSON.stringify(updates)
       })
       
       const data = await res.json()
