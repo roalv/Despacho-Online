@@ -212,13 +212,23 @@ export default function DespachoOnline() {
     setLoading(true)
     
     try {
+      // Enviar apenas os campos permitidos
+      const updates = {
+        id,
+        nome: editingCliente.nome,
+        nif: editingCliente.nif,
+        telefone: editingCliente.telefone,
+        email: editingCliente.email,
+        endereco: editingCliente.endereco || ''
+      }
+      
       const res = await fetch('/api/clientes', {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
           'x-user-id': user.id
         },
-        body: JSON.stringify({ id, ...editingCliente })
+        body: JSON.stringify(updates)
       })
       
       const data = await res.json()
