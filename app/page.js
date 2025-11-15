@@ -1104,7 +1104,14 @@ export default function DespachoOnline() {
                             <TableCell>{cliente.telefone}</TableCell>
                             <TableCell>{cliente.email}</TableCell>
                             <TableCell className="text-right space-x-2">
-                              <Button size="sm" variant="outline" onClick={() => setEditingCliente(cliente)}>
+                              <Button size="sm" variant="outline" onClick={() => setEditingCliente({
+                                id: cliente.id,
+                                nome: cliente.nome,
+                                nif: cliente.nif,
+                                telefone: cliente.telefone,
+                                email: cliente.email,
+                                endereco: cliente.endereco
+                              })}>
                                 <Edit size={14} />
                               </Button>
                               <Button size="sm" variant="outline" onClick={() => viewClienteDetails(cliente.id)}>
