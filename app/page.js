@@ -1690,20 +1690,79 @@ export default function DespachoOnline() {
                           produto.despachos?.clientes?.nome?.toLowerCase().includes(termo)
                         )
                       }).map(produto => (
-                        <TableRow key={produto.id}>
-                          <TableCell className="font-medium">{produto.nome}</TableCell>
-                          <TableCell className="font-mono text-blue-600">{produto.codigo || 'N/A'}</TableCell>
-                          <TableCell>{produto.peso}</TableCell>
-                          <TableCell>{produto.quantidade}</TableCell>
-                          <TableCell>${produto.valor}</TableCell>
-                          <TableCell>{produto.despachos?.clientes?.nome || 'N/A'}</TableCell>
-                          <TableCell className="font-mono">{produto.despachos?.numeroSeries || 'N/A'}</TableCell>
-                          <TableCell className="text-right">
-                            <Button size="sm" variant="destructive" onClick={() => handleDeleteProduto(produto.id)}>
-                              <Trash2 size={14} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+                        editingProduto?.id === produto.id ? (
+                          <TableRow key={produto.id} className="bg-blue-50">
+                            <TableCell>
+                              <Input
+                                value={editingProduto.nome}
+                                onChange={(e) => setEditingProduto({ ...editingProduto, nome: e.target.value })}
+                                placeholder="Nome"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={editingProduto.codigo}
+                                onChange={(e) => setEditingProduto({ ...editingProduto, codigo: e.target.value })}
+                                placeholder="Código"
+                                className="font-mono text-blue-600"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                type="number"
+                                step="0.01"
+                                value={editingProduto.peso}
+                                onChange={(e) => setEditingProduto({ ...editingProduto, peso: e.target.value })}
+                                placeholder="Peso"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                type="number"
+                                value={editingProduto.quantidade}
+                                onChange={(e) => setEditingProduto({ ...editingProduto, quantidade: e.target.value })}
+                                placeholder="Qtd"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                type="number"
+                                step="0.01"
+                                value={editingProduto.valor}
+                                onChange={(e) => setEditingProduto({ ...editingProduto, valor: e.target.value })}
+                                placeholder="Valor"
+                              />
+                            </TableCell>
+                            <TableCell>{produto.despachos?.clientes?.nome || 'N/A'}</TableCell>
+                            <TableCell className="font-mono">{produto.despachos?.numeroSeries || 'N/A'}</TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" onClick={() => handleUpdateProduto(produto.id)} disabled={loading}>
+                                Salvar
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => setEditingProduto(null)}>
+                                Cancelar
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          <TableRow key={produto.id}>
+                            <TableCell className="font-medium">{produto.nome}</TableCell>
+                            <TableCell className="font-mono text-blue-600">{produto.codigo || 'N/A'}</TableCell>
+                            <TableCell>{produto.peso}</TableCell>
+                            <TableCell>{produto.quantidade}</TableCell>
+                            <TableCell>${produto.valor}</TableCell>
+                            <TableCell>{produto.despachos?.clientes?.nome || 'N/A'}</TableCell>
+                            <TableCell className="font-mono">{produto.despachos?.numeroSeries || 'N/A'}</TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" variant="outline" onClick={() => setEditingProduto(produto)}>
+                                <Edit size={14} />
+                              </Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleDeleteProduto(produto.id)}>
+                                <Trash2 size={14} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
                       ))}
                     </TableBody>
                   </Table>
