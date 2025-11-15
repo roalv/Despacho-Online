@@ -1278,31 +1278,86 @@ export default function DespachoOnline() {
                     </TableHeader>
                     <TableBody>
                       {filteredDespachos.map(despacho => (
-                        <TableRow key={despacho.id}>
-                          <TableCell className="font-medium">{despacho.clientes?.nome}</TableCell>
-                          <TableCell className="font-mono">{despacho.numeroSeries || 'N/A'}</TableCell>
-                          <TableCell>
-                            <Select value={despacho.estado} onValueChange={(value) => handleUpdateDespachoEstado(despacho.id, value)}>
-                              <SelectTrigger className="w-36">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Faltando Documento">Faltando Documento</SelectItem>
-                                <SelectItem value="Em Andamento">Em Andamento</SelectItem>
-                                <SelectItem value="Pronto">Pronto</SelectItem>
-                                <SelectItem value="Concluído">Concluído</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </TableCell>
-                          <TableCell className="text-right space-x-2">
-                            <Button size="sm" variant="outline" onClick={() => viewDespachoDetails(despacho.id)}>
-                              <Eye size={14} />
-                            </Button>
-                            <Button size="sm" variant="destructive" onClick={() => handleDeleteDespacho(despacho.id)}>
-                              <Trash2 size={14} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+                        editingDespacho?.id === despacho.id ? (
+                          <TableRow key={despacho.id} className="bg-blue-50">
+                            <TableCell>
+                              <Select 
+                                value={editingDespacho.clienteId} 
+                                onValueChange={(value) => setEditingDespacho({ ...editingDespacho, clienteId: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Selecione um cliente" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {clientes.map(c => (
+                                    <SelectItem key={c.id} value={c.id}>{c.nome}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell>
+                              <Input
+                                value={editingDespacho.numeroSeries}
+                                onChange={(e) => setEditingDespacho({ ...editingDespacho, numeroSeries: e.target.value })}
+                                placeholder="Número de Série"
+                                className="font-mono"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Select 
+                                value={editingDespacho.estado} 
+                                onValueChange={(value) => setEditingDespacho({ ...editingDespacho, estado: value })}
+                              >
+                                <SelectTrigger className="w-36">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Faltando Documento">Faltando Documento</SelectItem>
+                                  <SelectItem value="Em Andamento">Em Andamento</SelectItem>
+                                  <SelectItem value="Pronto">Pronto</SelectItem>
+                                  <SelectItem value="Concluído">Concluído</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" onClick={() => handleUpdateDespacho(despacho.id)} disabled={loading}>
+                                Salvar
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => setEditingDespacho(null)}>
+                                Cancelar
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ) : (
+                          <TableRow key={despacho.id}>
+                            <TableCell className="font-medium">{despacho.clientes?.nome}</TableCell>
+                            <TableCell className="font-mono">{despacho.numeroSeries || 'N/A'}</TableCell>
+                            <TableCell>
+                              <Select value={despacho.estado} onValueChange={(value) => handleUpdateDespachoEstado(despacho.id, value)}>
+                                <SelectTrigger className="w-36">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Faltando Documento">Faltando Documento</SelectItem>
+                                  <SelectItem value="Em Andamento">Em Andamento</SelectItem>
+                                  <SelectItem value="Pronto">Pronto</SelectItem>
+                                  <SelectItem value="Concluído">Concluído</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </TableCell>
+                            <TableCell className="text-right space-x-2">
+                              <Button size="sm" variant="outline" onClick={() => { setEditingDespacho(despacho); fetchClientes(); }}>
+                                <Edit size={14} />
+                              </Button>
+                              <Button size="sm" variant="outline" onClick={() => viewDespachoDetails(despacho.id)}>
+                                <Eye size={14} />
+                              </Button>
+                              <Button size="sm" variant="destructive" onClick={() => handleDeleteDespacho(despacho.id)}>
+                                <Trash2 size={14} />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        )
                       ))}
                     </TableBody>
                   </Table>
