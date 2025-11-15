@@ -435,6 +435,18 @@ const handleProdutos = async (request, method) => {
   if (method === 'DELETE') {
     const body = await request.json()
     const { id } = body
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+
+    // Verificar se o produto pertence a um despacho do usuário
+    const { data: produto } = await supabase
+      .from('produtos')
+      .select('despachoId, despachos!inner(userId)')
+      .eq('id', id)
+      .eq('despachos.userId', userId)
+      .single()
+    
+    if (!produto) return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 })
 
     const { error } = await supabase
       .from('produtos')
