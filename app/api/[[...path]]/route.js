@@ -542,16 +542,21 @@ const handleUpload = async (request, method) => {
 // All documents
 const handleAllDocumentos = async (request, method) => {
   if (method === 'GET') {
-    // Get all client documents
+    const userId = request.headers.get('x-user-id')
+    if (!userId) return NextResponse.json({ error: 'Não autenticado' }, { status: 401 })
+    
+    // Get all client documents (filtrado por userId)
     const { data: clienteDocs, error: error1 } = await supabase
       .from('documentos_clientes')
-      .select('*, clientes(nome)')
+      .select('*, clientes!inner(nome, userId)')
+      .eq('clientes.userId', userId)
       .order('uploadedAt', { ascending: false })
     
-    // Get all despacho documents
+    // Get all despacho documents (filtrado por userId)
     const { data: despachoDocs, error: error2 } = await supabase
       .from('documentos_despachos')
-      .select('*, despachos(destino, numeroContentor, clientes(nome))')
+      .select('*, despachos!inner(numeroSeries, userId, clientes(nome))')
+      .eq('despachos.userId', userId)
       .order('uploadedAt', { ascending: false })
     
     const allDocs = [
